@@ -1,0 +1,25 @@
+{
+  "name": "cordova-plugin-paypalbraintree",
+  "version": "0.0.1",
+  "description": "Braintree's JavaScript SDK lets you easily accept payments from PayPal.",
+  "cordova": {
+    "id": "cordova-plugin-paypalbraintree",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yomyer/cordova-plugin-paypalbraintree.git"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-ios"
+  ],
+  "author": "Sergio Caballero (Yomyer New Line S.L.)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yomyer/cordova-plugin-paypalbraintree/issues"
+  },
+  "homepage": "https://github.com/Yomyer/cordova-plugin-paypalbraintree#readme"
+}
