@@ -1,0 +1,21 @@
+def packageName = getPackageName()
+
+android {
+    defaultConfig {
+        applicationId packageName
+    }
+}
+
+dependencies {
+    api 'com.braintreepayments.api:braintree:2.+'
+}
+
+def getPackageName() {
+    def configFile = file("res/xml/config.xml")
+    if (!configFile.exists()) {
+      configFile = file("src/main/res/xml/config.xml")
+    }
+    def config = configFile.getText()
+    def xml = new XmlParser(false, false).parseText(config)
+    return xml.attribute("id")
+}

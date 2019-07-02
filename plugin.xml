@@ -1,2 +1,116 @@
-<?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-paypalbraintree" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android"><name>PaypalBraintree</name><js-module name="PaypalBraintree" src="www/PaypalBraintree.js"><clobbers target="cordova.plugins.PaypalBraintree" /></js-module><platform name="ios"><config-file parent="/*" target="config.xml"><feature name="PaypalBraintree"><param name="ios-package" value="PaypalBraintree" /></feature></config-file><source-file src="src/ios/PaypalBraintree.m" /></platform></plugin>
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-paypalbraintree" version="0.0.1">
+   <name>PaypalBraintree</name>
+   <description>Braintree's JavaScript SDK lets you easily accept payments from PayPal.</description>
+   <license>MIT</license>
+
+   <keywords />
+   <repo>https://github.com/Yomyer/cordova-plugin-paypalbraintree.git</repo>
+   <js-module name="PaypalBraintree" src="www/PaypalBraintree.js">
+      <clobbers target="PaypalBraintree" />
+   </js-module>
+   <platform name="ios">
+
+	    <hook type="after_platform_add" src="scripts/add_embedded_ios_frameworks.js" />
+	    <hook type="after_plugin_install" src="scripts/add_embedded_ios_frameworks.js" />
+
+      <config-file parent="/*" target="config.xml">
+         <feature name="PaypalBraintree">
+            <param name="ios-package" value="PaypalBraintree" />
+            <param name="onload" value="true" />
+         </feature>
+      </config-file>
+
+      <config-file target="*-Info.plist" parent="LSApplicationQueriesSchemes">
+         <array>
+            <string>com.paypal.ppclient.touch.v1</string>
+            <string>com.paypal.ppclient.touch.v2</string>
+            <string>com.venmo.touch.v2</string>
+         </array>
+      </config-file>
+
+      <config-file target="*-Info.plist" parent="CFBundleURLTypes">
+         <array>
+            <dict>
+               <key>CFBundleTypeRole</key>
+               <string>Editor</string>
+               <key>CFBundleURLSchemes</key>
+               <array>
+                  <string>$PACKAGE_NAME.payments</string>
+               </array>
+            </dict>
+         </array>
+      </config-file>
+
+      <source-file src="src/ios/PaypalBraintree.h" />
+      <source-file src="src/ios/PaypalBraintree.m" />
+
+      <framework src="lib/ios/Braintree3DSecure.framework" custom="true" embed="true" weak="false" />
+      <framework src="lib/ios/BraintreeAmericanExpress.framework" custom="true" embed="true" weak="false" />
+      <framework src="lib/ios/BraintreeApplePay.framework" custom="true" embed="true" weak="false" />
+      <framework src="lib/ios/BraintreeCard.framework" custom="true" embed="true" weak="false" />
+      <framework src="lib/ios/BraintreeCore.framework" custom="true" embed="true" weak="false" />
+      <framework src="lib/ios/BraintreeDataCollector.framework" custom="true" embed="true" weak="false" />
+      <framework src="lib/ios/BraintreeDropIn.framework" custom="true" embed="true" weak="false" />
+      <framework src="lib/ios/BraintreePaymentFlow.framework" custom="true" embed="true" weak="false" />
+      <framework src="lib/ios/BraintreePayPal.framework" custom="true" embed="true" weak="false" />
+      <framework src="lib/ios/BraintreeUI.framework" custom="true" embed="true" weak="false" />
+      <framework src="lib/ios/BraintreeUIKit.framework" custom="true" embed="true" weak="false" />
+      <framework src="lib/ios/BraintreeUnionPay.framework" custom="true" embed="true" weak="false" />
+      <framework src="lib/ios/BraintreeVenmo.framework" custom="true" embed="true" weak="false" />
+      <framework src="lib/ios/PayPalDataCollector.framework" custom="true" embed="true" weak="false" />
+      <framework src="lib/ios/PayPalOneTouch.framework" custom="true" embed="true" weak="false" />
+      <framework src="lib/ios/PayPalUtils.framework" custom="true" embed="true" weak="false" />
+
+   </platform>
+
+
+   <platform name="browser">
+
+      <config-file parent="/*" target="config.xml">
+         <feature name="PaypalBraintree">
+            <param name="browser-package" value="PaypalBraintree" />
+         </feature>
+      </config-file>
+
+      <js-module name="Checkout" src="src/browser/checkout.js">
+         <clobbers target="checkout" />
+      </js-module>
+      <js-module name="Braintree" src="src/browser/braintree.js">
+         <clobbers target="braintree.client" />
+      </js-module>
+      <js-module name="Paypal" src="src/browser/paypal.js">
+         <clobbers target="braintree.paypalCheckout" />
+      </js-module>
+      <js-module name="PaypalBraintreeProxy" src="src/browser/PaypalBraintreeProxy.js">
+         <runs />
+      </js-module>
+
+   </platform>
+
+
+   <platform name="android">
+
+      <config-file parent="/*" target="res/xml/config.xml">
+         <feature name="PaypalBraintree">
+            <param name="android-package" value="yomyer.PaypalBraintree" />
+         </feature>
+      </config-file>
+
+      <source-file src="src/android/PaypalBraintree.java" target-dir="src/yomyer/PaypalBraintree" />
+      
+      <framework src="src/android/build-extras.gradle" custom="true" type="gradleReference" />
+
+      <config-file target="AndroidManifest.xml" parent="application">
+         <activity android:name="com.braintreepayments.api.BraintreePaymentActivity" />
+			<activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity" android:launchMode="singleTask">
+				<intent-filter>
+					<action android:name="android.intent.action.VIEW" />
+					<category android:name="android.intent.category.DEFAULT" />
+					<category android:name="android.intent.category.BROWSABLE" />
+					<data android:scheme="${applicationId}.braintree" />
+				</intent-filter>
+			</activity>
+      </config-file>
+   </platform>
+</plugin>

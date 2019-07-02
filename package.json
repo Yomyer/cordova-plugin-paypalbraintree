@@ -17,7 +17,7 @@
     "cordova-ios"
   ],
   "author": "Sergio Caballero (Yomyer New Line S.L.)",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Yomyer/cordova-plugin-paypalbraintree/issues"
   },
