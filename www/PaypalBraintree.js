@@ -2,6 +2,27 @@ var exec = require('cordova/exec');
 
 var PLUGUIN_NAME = 'PaypalBraintree';
 
+var locales = {
+    'en': 'en_US', 
+    'es': 'es_ES', 
+    'it': 'it_IT', 
+    'fr': 'fr_FR', 
+    'de': 'de_DE', 
+    'da': 'da_DK', 
+    'zh': 'zh_HK', 
+    'id': 'id_ID', 
+    'he': 'he_IL', 
+    'ja': 'ja_JP', 
+    'nl': 'nl_NL', 
+    'no': 'no_NO', 
+    'pl': 'pl_PL', 
+    'pt': 'pt_PT', 
+    'ru': 'ru_RU', 
+    'sv': 'sv_SE', 
+    'th': 'th_TH', 
+    'zh': 'zh_TW'
+}
+
 var PaypalBraintree = {
     error: null,
     authorize: null,
@@ -34,6 +55,7 @@ var PaypalBraintree = {
             items: options.items || [],
             element: options.element || null,
             env: options.env || 'sandbox',
+            locale: options.locale ? locales[options.locale] || 'en_US' : 'en_US',
             customButton: options.customButton === 'null' ? true : options.customButton
         }
 

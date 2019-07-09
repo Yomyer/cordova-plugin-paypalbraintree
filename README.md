@@ -62,6 +62,7 @@ PaypalBraintree.initialize(token, {
         element: this.button.nativeElement, 
         // If you want to hide the default Paypal button and use a custom button element
         customButton: true, 
+        env: 'sandbox',
         items: [
             {
                 quantity: '1',

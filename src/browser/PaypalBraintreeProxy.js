@@ -4,6 +4,11 @@ var PaypalBraintree = {
   initialize: function (success, error, opts) {
     var options = opts[0];
 
+    if (options.customButton) {
+      options.element.style.height = options.element.clientHeight + 'px';
+      options.element.style.overflow = 'hidden';
+    }
+
     paypal.Button.render({
       braintree: braintree,
       client: {
@@ -16,6 +21,7 @@ var PaypalBraintree = {
         shape: 'rect',
         size: 'large'
       },
+      locale: options.locale,
       payment: function (data, actions) {
         var data = {
           flow: 'checkout', // Required
@@ -23,11 +29,11 @@ var PaypalBraintree = {
           currency: options.currency // Required
         };
 
-        if(options.name){
+        if (options.name) {
           data.displayName = options.name
         }
-        
-        if(options.items){
+
+        if (options.items) {
           data.lineItems = options.items.map(element => {
             element.kind = element.kind || 'debit';
             return element;
@@ -57,7 +63,7 @@ var PaypalBraintree = {
       },
 
       onRender: function (data, actions) {
-        if(options.customButton){
+        if (options.customButton) {
           options.element.style.position = 'relative';
           setTimeout(_ => {
             var context = options.element.querySelector('.paypal-button');
@@ -67,6 +73,12 @@ var PaypalBraintree = {
             context.style.bottom = 0;
             context.style.right = 0;
             context.style.opacity = 0.000001;
+
+            var outlet = options.element.querySelector('.zoid-outlet');
+            outlet.style.width = '100%';
+            outlet.style.display = 'block';
+            outlet.style.margin = 'auto';
+            
           });
         }
       }
