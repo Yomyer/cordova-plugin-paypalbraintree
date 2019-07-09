@@ -932,7 +932,7 @@
                 country: config.a.locale.country,
                 lang: config.a.locale.lang,
                 uid: Object(session.c)(),
-                ver: "4.0.277"
+                ver: "4.0.280"
             };
         }), Object(client.a)(function() {
             return {
@@ -1177,7 +1177,7 @@
         });
     });
     function getScriptVersion() {
-        return Boolean(getCurrentScript()) ? "4" : "4.0.277";
+        return Boolean(getCurrentScript()) ? "4" : "4.0.280";
     }
     function getCurrentScriptUrl() {
         var script = getCurrentScript();
@@ -1186,7 +1186,7 @@
             return 0 === scriptUrl.indexOf("http://www.paypalobjects.com") && (scriptUrl = scriptUrl.replace("http://", "https://")), 
             scriptUrl;
         }
-        return "https://www.paypalobjects.com/api/checkout.4.0.277.js";
+        return "https://www.paypalobjects.com/api/checkout.4.0.280.js";
     }
     function getDomainSetting(name, def) {
         var hostname = window.xchild ? window.xchild.getParentDomain() : Object(cross_domain_utils_src.g)();
@@ -1390,7 +1390,7 @@
         locales: constants.z,
         scriptUrl: "//www.paypalobjects.com/api/checkout.js",
         paypal_domain_regex: /^(https?|mock):\/\/[a-zA-Z0-9_.-]+\.paypal\.com(:\d+)?$/,
-        version: "4.0.277",
+        version: "4.0.280",
         cors: !0,
         env: "undefined" == typeof window || void 0 === window.location ? constants.t.PRODUCTION : -1 !== window.location.host.indexOf("localhost.paypal.com") ? constants.t.LOCAL : -1 !== window.location.host.indexOf("qa.paypal.com") ? constants.t.STAGE : -1 !== window.location.host.indexOf("sandbox.paypal.com") ? constants.t.SANDBOX : constants.t.PRODUCTION,
         state: "checkoutjs",
@@ -1725,6 +1725,12 @@
                 disable_venmo: !0
             },
             "llmhq.com": {
+                disable_venmo: !0
+            },
+            "gainful.com": {
+                disable_venmo: !0
+            },
+            "modaoperandi.com": {
                 disable_venmo: !0
             }
         },
@@ -2572,6 +2578,11 @@
         return newobj;
     }
     var objectIDs = new cross_domain_safe_weakmap_src.a();
+    function getObjectID(obj) {
+        if (null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
+        var uid = objectIDs.get(obj);
+        return uid || (uid = typeof obj + ":" + uniqueID(), objectIDs.set(obj, uid)), uid;
+    }
     function stringify(item) {
         return "string" == typeof item ? item : item && "function" == typeof item.toString ? item.toString() : {}.toString.call(item);
     }
@@ -2626,17 +2637,22 @@
             var cacheKey;
             try {
                 cacheKey = JSON.stringify([].slice.call(arguments), function(key, val) {
-                    return "function" == typeof val ? "zoid:memoize[" + function(obj) {
-                        if (null == obj || "object" != typeof obj && "function" != typeof obj) throw new Error("Invalid object");
-                        var uid = objectIDs.get(obj);
-                        return uid || (uid = typeof obj + ":" + uniqueID(), objectIDs.set(obj, uid)), uid;
-                    }(val) + "]" : val;
+                    return "function" == typeof val ? "zoid:memoize[" + getObjectID(val) + "]" : val;
                 });
             } catch (err) {
                 throw new Error("Arguments not serializable -- can not be used to memoize");
             }
             return results.hasOwnProperty(cacheKey) || (results[cacheKey] = method.apply(this, arguments)), 
             results[cacheKey];
+        };
+    }
+    function debounce(method, time) {
+        var timeout;
+        return void 0 === time && (time = 100), function() {
+            var _this = this, _arguments = arguments;
+            clearTimeout(timeout), timeout = setTimeout(function() {
+                return method.apply(_this, _arguments);
+            }, time);
         };
     }
     function serializeFunctions(obj) {
@@ -2796,7 +2812,7 @@
         return params;
     });
     function extendQuery(originalQuery, props) {
-        return void 0 === props && (props = {}), props && Object.keys(props).length ? (void 0 === (obj = Object(esm_extends.a)({}, parseQuery(originalQuery), props)) && (obj = {}), 
+        return void 0 === props && (props = {}), props && Object.keys(props).length ? (void 0 === (obj = Object(esm_extends.a)({}, parseQuery(originalQuery), {}, props)) && (obj = {}), 
         Object.keys(obj).filter(function(key) {
             return "string" == typeof obj[key];
         }).map(function(key) {
@@ -3051,103 +3067,105 @@
     }();
     __webpack_require__.d(__webpack_exports__, "d", function() {
         return appendChild;
-    }), __webpack_require__.d(__webpack_exports__, "t", function() {
+    }), __webpack_require__.d(__webpack_exports__, "u", function() {
         return getElement;
-    }), __webpack_require__.d(__webpack_exports__, "m", function() {
+    }), __webpack_require__.d(__webpack_exports__, "n", function() {
         return elementReady;
-    }), __webpack_require__.d(__webpack_exports__, "H", function() {
+    }), __webpack_require__.d(__webpack_exports__, "I", function() {
         return popup;
-    }), __webpack_require__.d(__webpack_exports__, "X", function() {
+    }), __webpack_require__.d(__webpack_exports__, "Y", function() {
         return writeToWindow;
-    }), __webpack_require__.d(__webpack_exports__, "W", function() {
+    }), __webpack_require__.d(__webpack_exports__, "X", function() {
         return writeElementToWindow;
     }), __webpack_require__.d(__webpack_exports__, "e", function() {
         return awaitFrameLoad;
     }), __webpack_require__.d(__webpack_exports__, "f", function() {
         return awaitFrameWindow;
-    }), __webpack_require__.d(__webpack_exports__, "x", function() {
+    }), __webpack_require__.d(__webpack_exports__, "y", function() {
         return iframe;
     }), __webpack_require__.d(__webpack_exports__, "b", function() {
         return addEventListener;
-    }), __webpack_require__.d(__webpack_exports__, "q", function() {
+    }), __webpack_require__.d(__webpack_exports__, "r", function() {
         return extendUrl;
-    }), __webpack_require__.d(__webpack_exports__, "P", function() {
+    }), __webpack_require__.d(__webpack_exports__, "Q", function() {
         return showElement;
-    }), __webpack_require__.d(__webpack_exports__, "w", function() {
+    }), __webpack_require__.d(__webpack_exports__, "x", function() {
         return hideElement;
-    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+    }), __webpack_require__.d(__webpack_exports__, "l", function() {
         return destroyElement;
-    }), __webpack_require__.d(__webpack_exports__, "O", function() {
+    }), __webpack_require__.d(__webpack_exports__, "P", function() {
         return showAndAnimate;
     }), __webpack_require__.d(__webpack_exports__, "c", function() {
         return animateAndHide;
     }), __webpack_require__.d(__webpack_exports__, "a", function() {
         return addClass;
-    }), __webpack_require__.d(__webpack_exports__, "K", function() {
+    }), __webpack_require__.d(__webpack_exports__, "L", function() {
         return removeClass;
-    }), __webpack_require__.d(__webpack_exports__, "s", function() {
+    }), __webpack_require__.d(__webpack_exports__, "t", function() {
         return getCurrentScriptDir;
-    }), __webpack_require__.d(__webpack_exports__, "V", function() {
+    }), __webpack_require__.d(__webpack_exports__, "W", function() {
         return watchElementForClose;
-    }), __webpack_require__.d(__webpack_exports__, "I", function() {
-        return prefetchPage;
-    }), __webpack_require__.d(__webpack_exports__, "B", function() {
-        return jsxDom;
-    }), __webpack_require__.d(__webpack_exports__, "E", function() {
-        return noop;
-    }), __webpack_require__.d(__webpack_exports__, "G", function() {
-        return once;
-    }), __webpack_require__.d(__webpack_exports__, "C", function() {
-        return memoize;
-    }), __webpack_require__.d(__webpack_exports__, "M", function() {
-        return serializeFunctions;
-    }), __webpack_require__.d(__webpack_exports__, "j", function() {
-        return deserializeFunctions;
-    }), __webpack_require__.d(__webpack_exports__, "i", function() {
-        return denodeify;
     }), __webpack_require__.d(__webpack_exports__, "J", function() {
+        return prefetchPage;
+    }), __webpack_require__.d(__webpack_exports__, "C", function() {
+        return jsxDom;
+    }), __webpack_require__.d(__webpack_exports__, "F", function() {
+        return noop;
+    }), __webpack_require__.d(__webpack_exports__, "H", function() {
+        return once;
+    }), __webpack_require__.d(__webpack_exports__, "D", function() {
+        return memoize;
+    }), __webpack_require__.d(__webpack_exports__, "i", function() {
+        return debounce;
+    }), __webpack_require__.d(__webpack_exports__, "N", function() {
+        return serializeFunctions;
+    }), __webpack_require__.d(__webpack_exports__, "k", function() {
+        return deserializeFunctions;
+    }), __webpack_require__.d(__webpack_exports__, "j", function() {
+        return denodeify;
+    }), __webpack_require__.d(__webpack_exports__, "K", function() {
         return promisify;
     }), __webpack_require__.d(__webpack_exports__, "h", function() {
         return dasherizeToCamel;
-    }), __webpack_require__.d(__webpack_exports__, "p", function() {
+    }), __webpack_require__.d(__webpack_exports__, "q", function() {
         return extend;
-    }), __webpack_require__.d(__webpack_exports__, "T", function() {
+    }), __webpack_require__.d(__webpack_exports__, "U", function() {
         return uniqueID;
-    }), __webpack_require__.d(__webpack_exports__, "r", function() {
+    }), __webpack_require__.d(__webpack_exports__, "s", function() {
         return get;
-    }), __webpack_require__.d(__webpack_exports__, "L", function() {
+    }), __webpack_require__.d(__webpack_exports__, "M", function() {
         return replaceObject;
     }), __webpack_require__.d(__webpack_exports__, "g", function() {
         return copyProp;
-    }), __webpack_require__.d(__webpack_exports__, "l", function() {
+    }), __webpack_require__.d(__webpack_exports__, "m", function() {
         return dotify;
-    }), __webpack_require__.d(__webpack_exports__, "Q", function() {
-        return stringify;
     }), __webpack_require__.d(__webpack_exports__, "R", function() {
-        return stringifyError;
-    }), __webpack_require__.d(__webpack_exports__, "o", function() {
-        return eventEmitter;
-    }), __webpack_require__.d(__webpack_exports__, "z", function() {
-        return isPerc;
-    }), __webpack_require__.d(__webpack_exports__, "A", function() {
-        return isPx;
+        return stringify;
     }), __webpack_require__.d(__webpack_exports__, "S", function() {
+        return stringifyError;
+    }), __webpack_require__.d(__webpack_exports__, "p", function() {
+        return eventEmitter;
+    }), __webpack_require__.d(__webpack_exports__, "A", function() {
+        return isPerc;
+    }), __webpack_require__.d(__webpack_exports__, "B", function() {
+        return isPx;
+    }), __webpack_require__.d(__webpack_exports__, "T", function() {
         return toCSS;
-    }), __webpack_require__.d(__webpack_exports__, "F", function() {
+    }), __webpack_require__.d(__webpack_exports__, "G", function() {
         return normalizeDimension;
-    }), __webpack_require__.d(__webpack_exports__, "D", function() {
+    }), __webpack_require__.d(__webpack_exports__, "E", function() {
         return memoized;
-    }), __webpack_require__.d(__webpack_exports__, "N", function() {
+    }), __webpack_require__.d(__webpack_exports__, "O", function() {
         return setLogLevel;
-    }), __webpack_require__.d(__webpack_exports__, "y", function() {
+    }), __webpack_require__.d(__webpack_exports__, "z", function() {
         return info;
-    }), __webpack_require__.d(__webpack_exports__, "U", function() {
+    }), __webpack_require__.d(__webpack_exports__, "V", function() {
         return warn;
-    }), __webpack_require__.d(__webpack_exports__, "n", function() {
+    }), __webpack_require__.d(__webpack_exports__, "o", function() {
         return logger_error;
-    }), __webpack_require__.d(__webpack_exports__, "v", function() {
+    }), __webpack_require__.d(__webpack_exports__, "w", function() {
         return globalFor;
-    }), __webpack_require__.d(__webpack_exports__, "u", function() {
+    }), __webpack_require__.d(__webpack_exports__, "v", function() {
         return global;
     });
 }, function(module, __webpack_exports__, __webpack_require__) {
@@ -3858,6 +3876,9 @@
         return belter_src__WEBPACK_IMPORTED_MODULE_1__.c;
     });
     var moduleGlobal = {};
+    function getGlobal() {
+        return "undefined" != typeof window ? window : "undefined" != typeof window ? window : moduleGlobal;
+    }
     function memoize(method, options) {
         void 0 === options && (options = {});
         var cache = {};
@@ -3871,7 +3892,7 @@
             }
             var time = options.time;
             cache[key] && time && Date.now() - cache[key].time < time && delete cache[key];
-            var glob = "undefined" != typeof window ? window : "undefined" != typeof window ? window : moduleGlobal;
+            var glob = getGlobal();
             return glob.__CACHE_START_TIME__ && cache[key] && cache[key].time < glob.__CACHE_START_TIME__ && delete cache[key], 
             cache[key] ? cache[key].value : (cache[key] = {
                 time: Date.now(),
@@ -3910,7 +3931,10 @@
                 });
             },
             trigger: function() {
-                for (var _i2 = 0; _i2 < listeners.length; _i2++) listeners[_i2].apply(void 0, arguments);
+                for (var _i2 = 0; _i2 < listeners.length; _i2++) {
+                    var listener = listeners[_i2];
+                    listener.apply(void 0, arguments);
+                }
             }
         };
     }
@@ -4060,7 +4084,7 @@
             if (message = function(win, message, options) {
                 void 0 === options && (options = {});
                 var id = Object(lib.q)(), type = Object(lib.c)(), sourceDomain = Object(src.g)(window);
-                return Object(esm_extends.a)({}, message, options, {
+                return Object(esm_extends.a)({}, message, {}, options, {
                     sourceDomain: sourceDomain,
                     id: message.id || id,
                     windowType: type
@@ -5173,9 +5197,8 @@
                 noop: !0,
                 decorate: function(original) {
                     return function(reason) {
-                        var onClose = original.apply(this, arguments), CLOSE_REASONS = zoid_src.a.CLOSE_REASONS;
-                        return this.props.onCancel && -1 !== [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason) ? (Object(beaver_logger_client.k)("close_trigger_cancel"), 
-                        this.props.onCancel({
+                        var onClose = original.apply(this, arguments), CLOSE_REASONS = zoid_src.a.CLOSE_REASONS, shouldCancel = this.props.onCancel && -1 !== [ CLOSE_REASONS.CLOSE_DETECTED, CLOSE_REASONS.USER_CLOSED ].indexOf(reason);
+                        return shouldCancel ? (Object(beaver_logger_client.k)("close_trigger_cancel"), this.props.onCancel({
                             paymentToken: this.paymentToken,
                             cancelUrl: this.cancelUrl
                         }).then(function() {
@@ -6136,7 +6159,7 @@
     }), __webpack_require__.d(interface_namespaceObject, "getByTag", function() {
         return getByTag;
     }), __webpack_require__.d(interface_namespaceObject, "getCurrentScriptDir", function() {
-        return lib.s;
+        return lib.t;
     }), __webpack_require__.d(interface_namespaceObject, "destroyAll", function() {
         return interface_destroyAll;
     }), __webpack_require__.d(interface_namespaceObject, "postRobot", function() {
@@ -6203,9 +6226,9 @@
                         var item = tasks[_i2];
                         item.name === name && results.push(item.run());
                     }
-                    return zalgo_promise_src.a.all(results).then(lib.E);
+                    return zalgo_promise_src.a.all(results).then(lib.F);
                 }
-            }), this.event = Object(lib.o)();
+            }), this.event = Object(lib.p)();
         }
         var _proto = BaseComponent.prototype;
         return _proto.addProp = function(options, name, def) {
@@ -6215,7 +6238,7 @@
         }, _proto.listeners = function() {
             throw new Error("Expected listeners to be implemented");
         }, _proto.error = function(err) {
-            throw new Error("Expected error to be implemented - got " + Object(lib.R)(err));
+            throw new Error("Expected error to be implemented - got " + Object(lib.S)(err));
         }, _proto.listen = function(win, domain) {
             var _this = this;
             if (!win) throw this.component.createError("window to listen to not set");
@@ -6249,16 +6272,16 @@
     function normalize(str) {
         return str.replace(/^[^a-z0-9A-Z]+|[^a-z0-9A-Z]+$/g, "").replace(/[^a-z0-9A-Z]+/g, "_");
     }
-    var isZoidComponentWindow = Object(lib.C)(function() {
+    var isZoidComponentWindow = Object(lib.D)(function() {
         return !!window.name && "xcomponent" === window.name.split("__")[0];
-    }), getComponentMeta = Object(lib.C)(function() {
+    }), getComponentMeta = Object(lib.D)(function() {
         if (!window.name) throw new Error("Can not get component meta without window name");
         var componentMeta, _window$name$split2 = window.name.split("__"), zoidcomp = _window$name$split2[0], name = _window$name$split2[1], version = _window$name$split2[2], encodedOptions = _window$name$split2[3];
         if ("xcomponent" !== zoidcomp) throw new Error("Window not rendered by zoid - got " + zoidcomp);
         try {
             componentMeta = JSON.parse(base32_default.a.decode(encodedOptions.toUpperCase()));
         } catch (err) {
-            throw new Error("Can not decode component-meta: " + encodedOptions + " " + Object(lib.R)(err));
+            throw new Error("Can not decode component-meta: " + encodedOptions + " " + Object(lib.S)(err));
         }
         return componentMeta.name = name, componentMeta.version = version.replace(/_/g, "."), 
         componentMeta;
@@ -6272,7 +6295,7 @@
         ref === constants.WINDOW_REFERENCES.GLOBAL) {
             var ancestor = Object(cross_domain_utils_src.e)(window);
             if (ancestor) for (var _i2 = 0, _getAllFramesInWindow2 = Object(cross_domain_utils_src.d)(ancestor); _i2 < _getAllFramesInWindow2.length; _i2++) {
-                var frame = _getAllFramesInWindow2[_i2], global = Object(lib.v)(frame);
+                var frame = _getAllFramesInWindow2[_i2], global = Object(lib.w)(frame);
                 if (global && global.windows && global.windows[uid]) {
                     result = global.windows[uid];
                     break;
@@ -6282,11 +6305,11 @@
         if (!result) throw new Error("Unable to find window by ref");
         return result;
     }
-    var window_getParentComponentWindow = Object(lib.C)(function() {
+    var window_getParentComponentWindow = Object(lib.D)(function() {
         var componentMeta = getComponentMeta();
         if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by zoid");
         return getWindowByRef(componentMeta.componentParent);
-    }), window_getParentRenderWindow = Object(lib.C)(function() {
+    }), window_getParentRenderWindow = Object(lib.D)(function() {
         var componentMeta = getComponentMeta();
         if (!componentMeta) throw new Error("Can not get parent component window - window not rendered by zoid");
         return getWindowByRef(componentMeta.renderParent);
@@ -6352,15 +6375,15 @@
                     if ("file:" === window.location.protocol) throw new Error("Can not get props from file:// domain");
                     throw new Error("Parent component window is on a different domain - expected " + Object(cross_domain_utils_src.g)() + " - can not retrieve props");
                 }
-                var global = Object(lib.v)(parentComponentWindow);
+                var global = Object(lib.w)(parentComponentWindow);
                 if (!global) throw new Error("Can not find global for parent component - can not retrieve props");
                 props = JSON.parse(global.props[componentMeta.uid]);
             }
             if (!props) throw new Error("Initial props not found");
-            return Object(lib.j)(props, function(_ref6) {
+            return Object(lib.k)(props, function(_ref6) {
                 var fullKey = _ref6.fullKey, self = _ref6.self, args = _ref6.args;
                 return _this2.onInit.then(function() {
-                    var func = Object(lib.r)(_this2.props, fullKey);
+                    var func = Object(lib.s)(_this2.props, fullKey);
                     if ("function" != typeof func) throw new TypeError("Expected " + fullKey + " to be function, got " + typeof func);
                     return func.apply(self, args);
                 });
@@ -6380,7 +6403,7 @@
                 }
                 return result;
             }(this.component, props, origin, required);
-            Object(lib.p)(this.props, normalizedProps), this.props.logLevel && Object(lib.N)(this.props.logLevel);
+            Object(lib.q)(this.props, normalizedProps), this.props.logLevel && Object(lib.O)(this.props.logLevel);
             for (var _i6 = 0, _this$onPropHandlers2 = this.onPropHandlers; _i6 < _this$onPropHandlers2.length; _i6++) _this$onPropHandlers2[_i6].call(this, this.props);
         }, _proto.sendToParent = function(name, data, options) {
             void 0 === data && (data = {}), void 0 === options && (options = {});
@@ -6412,7 +6435,7 @@
             height = !0), {
                 width: width,
                 height: height,
-                element: autoResize.element ? Object(lib.t)(autoResize.element) : document.body
+                element: autoResize.element ? Object(lib.u)(autoResize.element) : document.body
             };
         }, _proto.watchForResize = function() {
             var _this4 = this, _this$getAutoResize = this.getAutoResize(), width = _this$getAutoResize.width, height = _this$getAutoResize.height, element = _this$getAutoResize.element;
@@ -6442,17 +6465,17 @@
             var _this6 = this;
             return zalgo_promise_src.a.resolve().then(function() {
                 if (_this6.component.log("resize", {
-                    width: Object(lib.Q)(width),
-                    height: Object(lib.Q)(height)
+                    width: Object(lib.R)(width),
+                    height: Object(lib.R)(height)
                 }), _this6.context !== constants.CONTEXT_TYPES.POPUP) return _this6.sendToParent(constants.POST_MESSAGE.RESIZE, {
                     width: width,
                     height: height
-                }).then(lib.E);
+                }).then(lib.F);
             });
         }, _proto.hide = function() {
-            return this.sendToParent(constants.POST_MESSAGE.HIDE).then(lib.E);
+            return this.sendToParent(constants.POST_MESSAGE.HIDE).then(lib.F);
         }, _proto.show = function() {
-            return this.sendToParent(constants.POST_MESSAGE.SHOW).then(lib.E);
+            return this.sendToParent(constants.POST_MESSAGE.SHOW).then(lib.F);
         }, _proto.userClose = function() {
             return this.close(constants.CLOSE_REASONS.USER_CLOSED);
         }, _proto.close = function(reason) {
@@ -6471,12 +6494,12 @@
         }, _proto.focus = function() {
             this.component.log("focus"), window.focus();
         }, _proto.error = function(err) {
-            var stringifiedError = Object(lib.R)(err);
+            var stringifiedError = Object(lib.S)(err);
             return this.component.logError("error", {
                 error: stringifiedError
             }), this.sendToParent(constants.POST_MESSAGE.ERROR, {
                 error: stringifiedError
-            }).then(lib.E);
+            }).then(lib.F);
         }, ChildComponent;
     }(base_BaseComponent);
     function _defineProperties(target, props) {
@@ -6517,14 +6540,14 @@
         decorated = !0);
         var type = prop.type;
         if ("boolean" === type) resultValue = Boolean(resultValue); else if ("function" === type) {
-            if (!resultValue && prop.noop && (resultValue = lib.E, !decorated && prop.decorate && (resultValue = prop.decorate.call(instance, lib.E, props))), 
+            if (!resultValue && prop.noop && (resultValue = lib.F, !decorated && prop.decorate && (resultValue = prop.decorate.call(instance, lib.F, props))), 
             resultValue && "function" == typeof resultValue) {
-                resultValue = resultValue.bind(instance), prop.denodeify && (resultValue = Object(lib.i)(resultValue)), 
-                prop.promisify && (resultValue = Object(lib.J)(resultValue));
+                resultValue = resultValue.bind(instance), prop.denodeify && (resultValue = Object(lib.j)(resultValue)), 
+                prop.promisify && (resultValue = Object(lib.K)(resultValue));
                 var original = resultValue;
                 resultValue = function() {
                     return component.log("call_prop_" + key), original.apply(this, arguments);
-                }, prop.once && (resultValue = Object(lib.G)(resultValue)), prop.memoize && (resultValue = Object(lib.C)(resultValue));
+                }, prop.once && (resultValue = Object(lib.H)(resultValue)), prop.memoize && (resultValue = Object(lib.D)(resultValue));
             }
         } else "string" === type || "object" === type || "number" === type && void 0 !== resultValue && (resultValue = parseInt(resultValue, 10));
         return resultValue;
@@ -6547,7 +6570,7 @@
         needsBridge: !1,
         open: function(url) {
             var _this = this, attributes = this.component.attributes.iframe || {};
-            return this.iframe = Object(lib.x)({
+            return this.iframe = Object(lib.y)({
                 url: url,
                 attributes: Object(esm_extends.a)({
                     name: this.childWindowName,
@@ -6563,16 +6586,16 @@
                     }).finally(function() {
                         return _this.destroy();
                     });
-                }, iframeWatcher = Object(lib.V)(_this.iframe, detectClose), elementWatcher = Object(lib.V)(_this.element, detectClose);
+                }, iframeWatcher = Object(lib.W)(_this.iframe, detectClose), elementWatcher = Object(lib.W)(_this.element, detectClose);
                 _this.clean.register("destroyWindow", function() {
                     iframeWatcher.cancel(), elementWatcher.cancel(), Object(src.cleanUpWindow)(_this.window), 
-                    delete _this.window, _this.iframe && (Object(lib.k)(_this.iframe), delete _this.iframe);
+                    delete _this.window, _this.iframe && (Object(lib.l)(_this.iframe), delete _this.iframe);
                 });
             });
         },
         openPrerender: function() {
             var _this2 = this, attributes = this.component.attributes.iframe || {};
-            return this.prerenderIframe = Object(lib.x)({
+            return this.prerenderIframe = Object(lib.y)({
                 attributes: Object(esm_extends.a)({
                     name: "__prerender__" + this.childWindowName,
                     scrolling: this.component.scrolling ? "yes" : "no"
@@ -6580,16 +6603,16 @@
                 class: [ constants.CLASS_NAMES.PRERENDER_FRAME, constants.CLASS_NAMES.VISIBLE ]
             }, this.element), Object(lib.f)(this.prerenderIframe).then(function(prerenderFrameWindow) {
                 _this2.prerenderWindow = prerenderFrameWindow, _this2.clean.register("destroyPrerender", function() {
-                    _this2.prerenderIframe && (Object(lib.k)(_this2.prerenderIframe), delete _this2.prerenderIframe);
+                    _this2.prerenderIframe && (Object(lib.l)(_this2.prerenderIframe), delete _this2.prerenderIframe);
                 });
             });
         },
         switchPrerender: function() {
             var _this3 = this;
-            Object(lib.a)(this.prerenderIframe, constants.CLASS_NAMES.INVISIBLE), Object(lib.K)(this.prerenderIframe, constants.CLASS_NAMES.VISIBLE), 
-            Object(lib.a)(this.iframe, constants.CLASS_NAMES.VISIBLE), Object(lib.K)(this.iframe, constants.CLASS_NAMES.INVISIBLE), 
+            Object(lib.a)(this.prerenderIframe, constants.CLASS_NAMES.INVISIBLE), Object(lib.L)(this.prerenderIframe, constants.CLASS_NAMES.VISIBLE), 
+            Object(lib.a)(this.iframe, constants.CLASS_NAMES.VISIBLE), Object(lib.L)(this.iframe, constants.CLASS_NAMES.INVISIBLE), 
             setTimeout(function() {
-                _this3.prerenderIframe && Object(lib.k)(_this3.prerenderIframe);
+                _this3.prerenderIframe && Object(lib.l)(_this3.prerenderIframe);
             }, 1e3);
         },
         delegateOverrides: {
@@ -6624,14 +6647,14 @@
             }
         },
         resize: function(width, height) {
-            width && (this.container.style.width = Object(lib.S)(width), this.element.style.width = Object(lib.S)(width)), 
-            height && (this.container.style.height = Object(lib.S)(height), this.element.style.height = Object(lib.S)(height));
+            width && (this.container.style.width = Object(lib.T)(width), this.element.style.width = Object(lib.T)(width)), 
+            height && (this.container.style.height = Object(lib.T)(height), this.element.style.height = Object(lib.T)(height));
         },
         show: function() {
-            Object(lib.P)(this.element);
+            Object(lib.Q)(this.element);
         },
         hide: function() {
-            Object(lib.w)(this.element);
+            Object(lib.x)(this.element);
         },
         loadUrl: function(url) {
             this.iframe.setAttribute("src", url);
@@ -6654,10 +6677,10 @@
                         y: y
                     };
                 }({
-                    width: width = Object(lib.F)(width, window.outerWidth),
-                    height: height = Object(lib.F)(height, window.outerWidth)
+                    width: width = Object(lib.G)(width, window.outerWidth),
+                    height: height = Object(lib.G)(height, window.outerWidth)
                 }), x = _getPosition.x, y = _getPosition.y, attributes = _this5.component.attributes.popup || {};
-                _this5.window = Object(lib.H)(url || "", Object(esm_extends.a)({
+                _this5.window = Object(lib.I)(url || "", Object(esm_extends.a)({
                     name: _this5.childWindowName,
                     width: width,
                     height: height,
@@ -6675,7 +6698,7 @@
             });
         },
         openPrerender: function() {
-            return zalgo_promise_src.a.try(lib.E);
+            return zalgo_promise_src.a.try(lib.F);
         },
         resize: function() {},
         hide: function() {
@@ -6710,7 +6733,7 @@
             } catch (err) {}
             this.window.location = url;
         }
-    }, lib.u.props = lib.u.props || {}, lib.u.windows = lib.u.windows || {};
+    }, lib.v.props = lib.v.props || {}, lib.v.windows = lib.v.windows || {};
     var component_class, component_class2, component_temp, parent_ParentComponent = (_temp = _class2 = function(_BaseComponent) {
         function ParentComponent(component, context, _ref) {
             var _this, props = _ref.props;
@@ -6725,7 +6748,7 @@
             } catch (err) {
                 throw props.onError && props.onError(err), err;
             }
-            return _this.props.logLevel && Object(lib.N)(_this.props.logLevel), _this.childWindowName = _this.buildChildWindowName({
+            return _this.props.logLevel && Object(lib.O)(_this.props.logLevel), _this.childWindowName = _this.buildChildWindowName({
                 renderTo: window
             }), _this.registerActiveComponent(), _this.component.log("construct_parent"), _this.watchForUnload(), 
             _this.onInit = new zalgo_promise_src.a(), _this.onInit.catch(function(err) {
@@ -6740,7 +6763,7 @@
                 _this2.component.log("render_" + _this2.context, {
                     context: _this2.context,
                     element: element,
-                    loadUrl: Object(lib.Q)(loadUrl)
+                    loadUrl: Object(lib.R)(loadUrl)
                 });
                 var tasks = {};
                 return tasks.onRender = _this2.props.onRender(), tasks.getDomain = _this2.getDomain(), 
@@ -6798,7 +6821,7 @@
                 if (!Object(cross_domain_utils_src.v)(window, win)) throw new Error("Can only renderTo an adjacent frame");
                 if (element && "string" != typeof element) throw new Error("Element passed to renderTo must be a string selector, got " + typeof element + " " + element);
                 return _this3.checkAllowRenderTo(win), _this3.component.log("render_" + _this3.context + "_to_win", {
-                    element: Object(lib.Q)(element),
+                    element: Object(lib.R)(element),
                     context: _this3.context
                 }), _this3.childWindowName = _this3.buildChildWindowName({
                     renderTo: win
@@ -6808,7 +6831,7 @@
             var _this4 = this;
             return zalgo_promise_src.a.try(function() {
                 _this4.html = _this4.buildUrl().then(function(url) {
-                    return Object(lib.I)(url).then(function(html) {
+                    return Object(lib.J)(url).then(function(html) {
                         return '\n                        <base href="' + url.split("/").slice(0, 3).join("/") + '">\n\n                        ' + html + "\n\n                        <script>\n                            if (window.history && window.history.pushState) {\n                                window.history.pushState({}, '', '/" + url.split("/").slice(3).join("/") + "');\n                            }\n                        <\/script>\n                    ";
                     });
                 });
@@ -6818,7 +6841,7 @@
             return zalgo_promise_src.a.try(function() {
                 if (!_this5.html) throw new Error("Html not prefetched");
                 return _this5.html.then(function(html) {
-                    return Object(lib.X)(_this5.window, html);
+                    return Object(lib.Y)(_this5.window, html);
                 });
             });
         }, _proto.checkAllowRenderTo = function(win) {
@@ -6835,9 +6858,9 @@
             });
         }, _proto.getComponentParentRef = function() {
             if (this.component.getDomain(null, this.props.env) === Object(cross_domain_utils_src.g)(window)) {
-                var uid = Object(lib.T)();
-                return lib.u.windows = lib.u.windows || {}, lib.u.windows[uid] = window, this.clean.register(function() {
-                    delete lib.u.windows[uid];
+                var uid = Object(lib.U)();
+                return lib.v.windows = lib.v.windows || {}, lib.v.windows[uid] = window, this.clean.register(function() {
+                    delete lib.v.windows[uid];
                 }), {
                     ref: constants.WINDOW_REFERENCES.GLOBAL,
                     uid: uid
@@ -6853,26 +6876,26 @@
             };
         }, _proto.getRenderParentRef = function(renderToWindow) {
             if (void 0 === renderToWindow && (renderToWindow = window), renderToWindow === window) return this.getComponentParentRef();
-            var uid = Object(lib.T)();
-            return lib.u.windows[uid] = renderToWindow, this.clean.register(function() {
-                delete lib.u.windows[uid];
+            var uid = Object(lib.U)();
+            return lib.v.windows[uid] = renderToWindow, this.clean.register(function() {
+                delete lib.v.windows[uid];
             }), {
                 ref: constants.WINDOW_REFERENCES.GLOBAL,
                 uid: uid
             };
         }, _proto.buildChildWindowName = function(_temp2) {
-            var _ref6$renderTo = (void 0 === _temp2 ? {} : _temp2).renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, childDomain = this.component.getDomain(null, this.props.env), sameDomain = Object(cross_domain_utils_src.u)(renderTo), uid = Object(lib.T)(), tag = this.component.tag, sProps = Object(lib.M)(this.getPropsForChild()), componentParent = this.getComponentParentRef(), renderParent = this.getRenderParentRef(renderTo), props = sameDomain || this.component.unsafeRenderTo ? {
+            var _ref6$renderTo = (void 0 === _temp2 ? {} : _temp2).renderTo, renderTo = void 0 === _ref6$renderTo ? window : _ref6$renderTo, childDomain = this.component.getDomain(null, this.props.env), sameDomain = Object(cross_domain_utils_src.u)(renderTo), uid = Object(lib.U)(), tag = this.component.tag, sProps = Object(lib.N)(this.getPropsForChild()), componentParent = this.getComponentParentRef(), renderParent = this.getRenderParentRef(renderTo), props = sameDomain || this.component.unsafeRenderTo ? {
                 type: constants.INITIAL_PROPS.RAW,
                 value: sProps
             } : {
                 type: constants.INITIAL_PROPS.UID,
                 uid: uid
             };
-            return props.type === constants.INITIAL_PROPS.UID && (lib.u.props[uid] = JSON.stringify(sProps), 
+            return props.type === constants.INITIAL_PROPS.UID && (lib.v.props[uid] = JSON.stringify(sProps), 
             this.clean.register(function() {
-                delete lib.u.props[uid];
+                delete lib.v.props[uid];
             })), function(name, version, options) {
-                void 0 === options && (options = {}), options.id = Object(lib.T)(), options.domain = Object(cross_domain_utils_src.g)(window);
+                void 0 === options && (options = {}), options.id = Object(lib.U)(), options.domain = Object(cross_domain_utils_src.g)(window);
                 var str, encodedName = normalize(name), encodedVersion = normalize(version), encodedOptions = (str = JSON.stringify(options), 
                 base32_default.a.encode(str).replace(/\=/g, "").toLowerCase());
                 if (!encodedName) throw new Error("Invalid name: " + name + " - must contain alphanumeric characters");
@@ -6910,7 +6933,7 @@
                     _prop2 && !props.hasOwnProperty(_key2) && validateProp(_prop2, _key2, _value2, props, required);
                 }
             }(this.component, props, required), this.component.validate && this.component.validate(this.component, props), 
-            this.props = this.props || {}, Object(lib.p)(this.props, function(component, instance, props) {
+            this.props = this.props || {}, Object(lib.q)(this.props, function(component, instance, props) {
                 var result = {};
                 props = props || {};
                 for (var _i2 = 0, _Object$keys2 = Object.keys(props); _i2 < _Object$keys2.length; _i2++) {
@@ -6928,7 +6951,7 @@
             }(this.component, this, props));
         }, _proto.buildUrl = function() {
             var propsDef, props, params, _this7 = this;
-            return zalgo_promise_src.a.all([ this.props.url, (propsDef = Object(esm_extends.a)({}, this.component.props, this.component.builtinProps), 
+            return zalgo_promise_src.a.all([ this.props.url, (propsDef = Object(esm_extends.a)({}, this.component.props, {}, this.component.builtinProps), 
             props = this.props, params = {}, zalgo_promise_src.a.all(Object.keys(props).map(function(key) {
                 var prop = propsDef[key];
                 if (prop) return zalgo_promise_src.a.resolve().then(function() {
@@ -6941,7 +6964,7 @@
                             if ("function" == typeof queryValue) return;
                             if ("object" == typeof queryValue && null !== queryValue) {
                                 if ("json" !== prop.serialization) {
-                                    result = Object(lib.l)(queryValue, key);
+                                    result = Object(lib.m)(queryValue, key);
                                     for (var _i6 = 0, _Object$keys4 = Object.keys(result); _i6 < _Object$keys4.length; _i6++) {
                                         var dotkey = _Object$keys4[_i6];
                                         params[dotkey] = result[dotkey];
@@ -6963,7 +6986,7 @@
                 return url && !_this7.component.getValidDomain(url) ? url : zalgo_promise_src.a.try(function() {
                     return url || _this7.component.getUrl(_this7.props.env, _this7.props);
                 }).then(function(finalUrl) {
-                    return query.xcomponent = "1", Object(lib.q)(finalUrl, {
+                    return query.xcomponent = "1", Object(lib.r)(finalUrl, {
                         query: query
                     });
                 });
@@ -7004,7 +7027,7 @@
                     domain && (needsBridgeParams.domain = domain);
                     var needsBridge = src.bridge.needsBridge(needsBridgeParams), bridgeUrl = _this10.component.getBridgeUrl(_this10.props.env);
                     if (bridgeUrl) {
-                        bridgeUrl = Object(lib.q)(bridgeUrl, {
+                        bridgeUrl = Object(lib.r)(bridgeUrl, {
                             query: {
                                 version: _this10.component.version
                             }
@@ -7036,7 +7059,7 @@
                 if (_this13.prerenderWindow && _this13.driver.switchPrerender) return _this13.driver.switchPrerender.call(_this13);
             });
         }, _proto.elementReady = function(element) {
-            return Object(lib.m)(element).then(lib.E);
+            return Object(lib.n)(element).then(lib.F);
         }, _proto.delegate = function(win) {
             var _this14 = this;
             this.component.log("delegate_" + this.context);
@@ -7081,7 +7104,7 @@
                 var data = _ref8.data;
                 return _this14.clean.register(data.destroy), data;
             }).catch(function(err) {
-                throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.R)(err));
+                throw new Error("Unable to delegate rendering. Possibly the component is not loaded in the target window.\n\n" + Object(lib.S)(err));
             }), overrides = this.driver.delegateOverrides, _loop = function(_i6, _Object$keys4) {
                 var key = _Object$keys4[_i6], val = overrides[key];
                 if (val === constants.DELEGATE.CALL_ORIGINAL) return "continue";
@@ -7106,7 +7129,7 @@
             }, 3e3);
             this.clean.register("destroyCloseWindowListener", closeWindowListener.cancel);
         }, _proto.watchForUnload = function() {
-            var _this17 = this, onunload = Object(lib.G)(function() {
+            var _this17 = this, onunload = Object(lib.H)(function() {
                 _this17.component.log("navigate_away"), Object(client.h)(), _this17.destroyComponent();
             }), unloadWindowListener = Object(lib.b)(window, "unload", onunload);
             this.clean.register("destroyUnloadWindowListener", unloadWindowListener.cancel);
@@ -7114,8 +7137,8 @@
             var _this18 = this;
             return zalgo_promise_src.a.try(function() {
                 var _query;
-                return _this18.component.log("load_url"), window.location.href.split("#")[0] === url.split("#")[0] && (url = Object(lib.q)(url, {
-                    query: (_query = {}, _query[Object(lib.T)()] = "1", _query)
+                return _this18.component.log("load_url"), window.location.href.split("#")[0] === url.split("#")[0] && (url = Object(lib.r)(url, {
+                    query: (_query = {}, _query[Object(lib.U)()] = "1", _query)
                 })), _this18.driver.loadUrl.call(_this18, url);
             });
         }, _proto.hijack = function(targetElement) {
@@ -7162,14 +7185,14 @@
             var _this21 = this;
             return zalgo_promise_src.a.try(function() {
                 _this21.component.log("resize", {
-                    height: Object(lib.Q)(height),
-                    width: Object(lib.Q)(width)
-                }), _this21.driver.resize.call(_this21, width, height);
+                    height: Object(lib.R)(height),
+                    width: Object(lib.R)(width)
+                }), _this21.driver.resize.call(_this21, width, height), _this21.props.onResize && _this21.props.onResize();
             });
         }, _proto.hide = function() {
-            return this.container && Object(lib.w)(this.container), this.driver.hide.call(this);
+            return this.container && Object(lib.x)(this.container), this.driver.hide.call(this);
         }, _proto.show = function() {
-            return this.container && Object(lib.P)(this.container), this.driver.show.call(this);
+            return this.container && Object(lib.Q)(this.container), this.driver.show.call(this);
         }, _proto.checkClose = function() {
             var _this22 = this, closeWindowListener = Object(cross_domain_utils_src.B)(this.window, function() {
                 _this22.userClose();
@@ -7215,7 +7238,7 @@
             }).then(function() {
                 return _this26.destroyComponent();
             }).then(function() {
-                _this26.childExports && _this26.context === constants.CONTEXT_TYPES.POPUP && !Object(cross_domain_utils_src.y)(win) && _this26.childExports.close().catch(lib.E);
+                _this26.childExports && _this26.context === constants.CONTEXT_TYPES.POPUP && !Object(cross_domain_utils_src.y)(win) && _this26.childExports.close().catch(lib.F);
             });
         }, _proto.destroyComponent = function() {
             this.clean.run("destroyUnloadWindowListener"), this.clean.run("destroyCloseWindowListener"), 
@@ -7225,14 +7248,14 @@
             return zalgo_promise_src.a.try(function() {
                 if (_this27.props.onDisplay) return _this27.props.onDisplay();
             }).then(function() {
-                if (_this27.container) return Object(lib.O)(_this27.container, constants.ANIMATION_NAMES.SHOW_CONTAINER, _this27.clean.register);
+                if (_this27.container) return Object(lib.P)(_this27.container, constants.ANIMATION_NAMES.SHOW_CONTAINER, _this27.clean.register);
             });
         }, _proto.showComponent = function() {
             var _this28 = this;
             return zalgo_promise_src.a.try(function() {
                 if (_this28.props.onDisplay) return _this28.props.onDisplay();
             }).then(function() {
-                if (_this28.element) return Object(lib.O)(_this28.element, constants.ANIMATION_NAMES.SHOW_COMPONENT, _this28.clean.register);
+                if (_this28.element) return Object(lib.P)(_this28.element, constants.ANIMATION_NAMES.SHOW_COMPONENT, _this28.clean.register);
             });
         }, _proto.hideContainer = function() {
             var _this29 = this;
@@ -7263,7 +7286,7 @@
                     }
                     try {
                         el = _this31.renderTemplate(_this31.component.prerenderTemplate, {
-                            jsxDom: lib.B.bind(doc),
+                            jsxDom: lib.C.bind(doc),
                             document: doc
                         });
                     } catch (err) {
@@ -7272,7 +7295,7 @@
                         }), void console.error(err.stack ? err.stack : err);
                     }
                     try {
-                        Object(lib.W)(win, el);
+                        Object(lib.X)(win, el);
                     } catch (err) {
                         _this31.component.logError("preprender_error", {
                             err: err.stack ? err.stack : err.toString()
@@ -7313,7 +7336,7 @@
                 on: function(eventName, handler) {
                     return _this32.on(eventName, handler);
                 },
-                jsxDom: lib.B,
+                jsxDom: lib.C,
                 document: document,
                 dimensions: {
                     width: width,
@@ -7324,15 +7347,15 @@
             var _this33 = this;
             return zalgo_promise_src.a.try(function() {
                 var el;
-                if (!(el = element ? Object(lib.t)(element) : document.body)) throw new Error("Could not find element to open container into");
+                if (!(el = element ? Object(lib.u)(element) : document.body)) throw new Error("Could not find element to open container into");
                 if (_this33.component.containerTemplate) {
                     var container = _this33.renderTemplate(_this33.component.containerTemplate, {
                         container: el
                     });
-                    if (_this33.container = container, Object(lib.w)(_this33.container), Object(lib.d)(el, _this33.container), 
+                    if (_this33.container = container, Object(lib.x)(_this33.container), Object(lib.d)(el, _this33.container), 
                     _this33.driver.renderedIntoContainerTemplate) {
-                        if (_this33.element = _this33.getOutlet(), Object(lib.w)(_this33.element), !_this33.element) throw new Error("Could not find element to render component into");
-                        Object(lib.w)(_this33.element);
+                        if (_this33.element = _this33.getOutlet(), Object(lib.x)(_this33.element), !_this33.element) throw new Error("Could not find element to render component into");
+                        Object(lib.x)(_this33.element);
                     }
                     _this33.clean.register("destroyContainerTemplate", function() {
                         _this33.container && _this33.container.parentNode && _this33.container.parentNode.removeChild(_this33.container), 
@@ -7363,13 +7386,13 @@
             }).then(function() {
                 if (_this36.props.onError) return _this36.props.onError(err);
             }).catch(function(errErr) {
-                throw new Error("An error was encountered while handling error:\n\n " + Object(lib.R)(err) + "\n\n" + Object(lib.R)(errErr));
+                throw new Error("An error was encountered while handling error:\n\n " + Object(lib.S)(err) + "\n\n" + Object(lib.S)(errErr));
             }).then(function() {
                 if (!_this36.props.onError) throw err;
             });
         }, ParentComponent.destroyAll = function() {
             for (var results = []; ParentComponent.activeComponents.length; ) results.push(ParentComponent.activeComponents[0].destroy());
-            return zalgo_promise_src.a.all(results).then(lib.E);
+            return zalgo_promise_src.a.all(results).then(lib.F);
         }, _createClass(ParentComponent, [ {
             key: "driver",
             get: function() {
@@ -7377,23 +7400,23 @@
                 return RENDER_DRIVERS[this.context];
             }
         } ]), ParentComponent;
-    }(base_BaseComponent), _class2.activeComponents = [], _applyDecoratedDescriptor((_class = _temp).prototype, "getOutlet", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "prefetch", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "prefetch"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "loadHTML", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "loadHTML"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "buildUrl", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "buildUrl"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "open", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "open"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "openPrerender", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "openPrerender"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "switchPrerender", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "switchPrerender"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "close", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "close"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "closeContainer", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "closeContainer"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "destroyContainer", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "destroyContainer"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "closeComponent", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "closeComponent"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "showContainer", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "showContainer"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "showComponent", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "showComponent"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "hideContainer", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "hideContainer"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "hideComponent", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "hideComponent"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "createPrerenderTemplate", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "createPrerenderTemplate"), _class.prototype), 
-    _applyDecoratedDescriptor(_class.prototype, "openContainer", [ lib.D ], Object.getOwnPropertyDescriptor(_class.prototype, "openContainer"), _class.prototype), 
+    }(base_BaseComponent), _class2.activeComponents = [], _applyDecoratedDescriptor((_class = _temp).prototype, "getOutlet", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "getOutlet"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "prefetch", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "prefetch"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "loadHTML", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "loadHTML"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "buildUrl", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "buildUrl"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "open", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "open"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "openPrerender", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "openPrerender"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "switchPrerender", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "switchPrerender"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "close", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "close"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "closeContainer", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "closeContainer"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "destroyContainer", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "destroyContainer"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "closeComponent", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "closeComponent"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "showContainer", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "showContainer"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "showComponent", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "showComponent"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "hideContainer", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "hideContainer"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "hideComponent", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "hideComponent"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "createPrerenderTemplate", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "createPrerenderTemplate"), _class.prototype), 
+    _applyDecoratedDescriptor(_class.prototype, "openContainer", [ lib.E ], Object.getOwnPropertyDescriptor(_class.prototype, "openContainer"), _class.prototype), 
     _class), delegate_DelegateComponent = function(_BaseComponent) {
         function DelegateComponent(component, source, options) {
             var _this;
@@ -7414,9 +7437,9 @@
             _this.focus = function() {
                 return zalgo_promise_src.a.all([ _this.isWindowClosed().then(function(closed) {
                     closed || window.open("", _this.childWindowName);
-                }), options.overrides.focus.call(_assertThisInitialized(_this)) ]).then(lib.E);
+                }), options.overrides.focus.call(_assertThisInitialized(_this)) ]).then(lib.F);
             }, _this.clean.register("destroyFocusOverride", function() {
-                _this.focus = lib.E;
+                _this.focus = lib.F;
             }), _this.userClose = options.overrides.userClose, _this.getDomain = options.overrides.getDomain, 
             _this.error = options.overrides.error, _this.on = options.overrides.on;
             for (var _i4 = 0, _Object$keys2 = Object.keys(RENDER_DRIVERS[options.context].delegateOverrides); _i4 < _Object$keys2.length; _i4++) {
@@ -7499,8 +7522,8 @@
                         if (prop.required && prop.def) throw new Error("Required prop can not have a default value");
                     }
                 }(options), options.dimensions) {
-                    if (options.dimensions && !Object(lib.A)(options.dimensions.width) && !Object(lib.z)(options.dimensions.width)) throw new Error("Expected options.dimensions.width to be a px or % string value");
-                    if (options.dimensions && !Object(lib.A)(options.dimensions.height) && !Object(lib.z)(options.dimensions.height)) throw new Error("Expected options.dimensions.height to be a px or % string value");
+                    if (options.dimensions && !Object(lib.B)(options.dimensions.width) && !Object(lib.A)(options.dimensions.width)) throw new Error("Expected options.dimensions.width to be a px or % string value");
+                    if (options.dimensions && !Object(lib.B)(options.dimensions.height) && !Object(lib.A)(options.dimensions.height)) throw new Error("Expected options.dimensions.height to be a px or % string value");
                 }
                 if (options.contexts) {
                     for (var anyEnabled = !1, _i4 = 0, _Object$keys4 = Object.keys(options.contexts); _i4 < _Object$keys4.length; _i4++) {
@@ -7530,7 +7553,7 @@
                 if (options.prerenderTemplate && "function" != typeof options.prerenderTemplate) throw new Error("Expected options.prerenderTemplate to be a function");
                 if (options.containerTemplate && "function" != typeof options.containerTemplate) throw new Error("Expected options.containerTemplate to be a function");
             }(options), _this.addProp(options, "tag"), _this.addProp(options, "defaultLogLevel", "info"), 
-            _this.addProp(options, "allowedParentDomains", constants.WILDCARD), Object(lib.N)(_this.defaultLogLevel), 
+            _this.addProp(options, "allowedParentDomains", constants.WILDCARD), Object(lib.O)(_this.defaultLogLevel), 
             Component.components[_this.tag]) throw new Error("Can not register multiple components with the same tag");
             return _this.addProp(options, "name", _this.tag.replace(/-/g, "_")), _this.builtinProps = {
                 env: {
@@ -7544,7 +7567,7 @@
                 uid: {
                     type: "string",
                     def: function() {
-                        return Object(lib.T)();
+                        return Object(lib.U)();
                     },
                     queryParam: !0
                 },
@@ -7607,6 +7630,12 @@
                     noop: !0,
                     once: !0,
                     promisify: !0,
+                    sendToChild: !1
+                },
+                onResize: {
+                    type: "function",
+                    required: !1,
+                    noop: !0,
                     sendToChild: !1
                 },
                 onTimeout: {
@@ -7819,15 +7848,15 @@
                 }
             };
         }, _proto.log = function(event, payload) {
-            void 0 === payload && (payload = {}), Object(lib.y)(this.name, event, payload);
+            void 0 === payload && (payload = {}), Object(lib.z)(this.name, event, payload);
         }, _proto.logWarning = function(event, payload) {
-            Object(lib.U)(this.name, event, payload);
+            Object(lib.V)(this.name, event, payload);
         }, _proto.logError = function(event, payload) {
-            Object(lib.n)(this.name, event, payload);
+            Object(lib.o)(this.name, event, payload);
         }, Component.getByTag = function(tag) {
             return Component.components[tag];
         }, Component;
-    }(base_BaseComponent), component_class2.components = {}, _applyDecoratedDescriptor((component_class = component_temp).prototype, "getPropNames", [ lib.C ], Object.getOwnPropertyDescriptor(component_class.prototype, "getPropNames"), component_class.prototype), 
+    }(base_BaseComponent), component_class2.components = {}, _applyDecoratedDescriptor((component_class = component_temp).prototype, "getPropNames", [ lib.D ], Object.getOwnPropertyDescriptor(component_class.prototype, "getPropNames"), component_class.prototype), 
     component_class);
     function create(options) {
         return new component_Component(options);
@@ -7945,6 +7974,9 @@
         } catch (err) {}
         delete global.a.tunnelWindows[id];
     }
+    function getTunnelWindow(id) {
+        return global.a.tunnelWindows[id];
+    }
     global.a.tunnelWindows = global.a.tunnelWindows || {}, global.a.tunnelWindowId = 0, 
     global.a.openTunnelToParent = function(_ref2) {
         var name = _ref2.name, source = _ref2.source, canary = _ref2.canary, sendMessage = _ref2.sendMessage, parentWindow = Object(src.m)(window);
@@ -7977,9 +8009,7 @@
         return global.a.send(parentWindow, conf.b.POST_MESSAGE_NAMES.OPEN_TUNNEL, {
             name: name,
             sendMessage: function() {
-                var tunnelWindow = function(id) {
-                    return global.a.tunnelWindows[id];
-                }(id);
+                var tunnelWindow = getTunnelWindow(id);
                 try {
                     Object(lib.j)(tunnelWindow && tunnelWindow.source);
                 } catch (err) {
@@ -8595,7 +8625,7 @@
     function beacon(event, payload) {
         void 0 === payload && (payload = {});
         try {
-            payload.event = "ppxo_" + event, payload.version = "4.0.277", payload.host = window.location.host, 
+            payload.event = "ppxo_" + event, payload.version = "4.0.280", payload.host = window.location.host, 
             payload.uid = Object(_session__WEBPACK_IMPORTED_MODULE_3__.c)(), payload.appName = APP_NAME;
             var query = [];
             for (var key in payload) payload.hasOwnProperty(key) && query.push(encodeURIComponent(key) + "=" + encodeURIComponent(payload[key]));
@@ -8742,8 +8772,8 @@
             var namespace = window[_namespaces2[_i2]];
             if (namespace) for (var _i4 = 0, _childnamespaces2 = childnamespaces; _i4 < _childnamespaces2.length; _i4++) {
                 var _extends2, childname = _childnamespaces2[_i4], childnamespace = xports[childname];
-                namespace[childname] && (childnamespace = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, namespace[childname], childnamespace)), 
-                xports = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, namespace, xports, ((_extends2 = {})[childname] = childnamespace, 
+                namespace[childname] && (childnamespace = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, namespace[childname], {}, childnamespace)), 
+                xports = Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, namespace, {}, xports, ((_extends2 = {})[childname] = childnamespace, 
                 _extends2));
             }
         }
@@ -8758,3231 +8788,3231 @@
     var containerContent = {
         AT: {
             de: {
-                windowMessage: "Sie sehen das sichere Browserfenster von PayPal nicht? Hier kÃ¶nnen Sie es wieder Ã¶ffnen und Ihren Einkauf abschlieÃŸen.",
+                windowMessage: "Sie sehen das sichere Browserfenster von PayPal nicht? Hier können Sie es wieder öffnen und Ihren Einkauf abschließen.",
                 continue: "Weiter"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         ZW: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         ZM: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         ZA: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         YT: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         YE: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             ar: {
-                windowMessage: "Ù„Ø§ ØªØ±Ù‰ Ù…ØªØµÙØ­ PayPal Ø§Ù„Ø¢Ù…Ù†ØŸ Ø³Ù†Ø³Ø§Ø¹Ø¯Ùƒ ÙÙŠ Ø¥Ø¹Ø§Ø¯Ø© ÙØªØ­ Ø§Ù„Ù†Ø§ÙØ°Ø© Ù„Ø§Ø³ØªÙƒÙ…Ø§Ù„ Ù…Ø´ØªØ±ÙŠØ§ØªÙƒ. Â  ",
-                continue: "Ù…ØªØ§Ø¨Ø¹Ø©"
+                windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                continue: "متابعة"
             }
         },
         WS: {
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         WF: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         VU: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat. ",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         VG: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         VE: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         VC: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         VA: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         UY: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         UG: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         TZ: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         TV: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat. ",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         TT: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         TO: {
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         TN: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             ar: {
-                windowMessage: "Ù„Ø§ ØªØ±Ù‰ Ù…ØªØµÙØ­ PayPal Ø§Ù„Ø¢Ù…Ù†ØŸ Ø³Ù†Ø³Ø§Ø¹Ø¯Ùƒ ÙÙŠ Ø¥Ø¹Ø§Ø¯Ø© ÙØªØ­ Ø§Ù„Ù†Ø§ÙØ°Ø© Ù„Ø§Ø³ØªÙƒÙ…Ø§Ù„ Ù…Ø´ØªØ±ÙŠØ§ØªÙƒ. Â  ",
-                continue: "Ù…ØªØ§Ø¨Ø¹Ø©"
+                windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                continue: "متابعة"
             }
         },
         TM: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         TJ: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         TG: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         TD: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         TC: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         SZ: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         SV: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         ST: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         SR: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         SO: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         SN: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         SM: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         SL: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         SJ: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         SH: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         SC: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         SB: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat. ",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         SA: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             ar: {
-                windowMessage: "Ù„Ø§ ØªØ±Ù‰ Ù…ØªØµÙØ­ PayPal Ø§Ù„Ø¢Ù…Ù†ØŸ Ø³Ù†Ø³Ø§Ø¹Ø¯Ùƒ ÙÙŠ Ø¥Ø¹Ø§Ø¯Ø© ÙØªØ­ Ø§Ù„Ù†Ø§ÙØ°Ø© Ù„Ø§Ø³ØªÙƒÙ…Ø§Ù„ Ù…Ø´ØªØ±ÙŠØ§ØªÙƒ. Â  ",
-                continue: "Ù…ØªØ§Ø¨Ø¹Ø©"
+                windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                continue: "متابعة"
             }
         },
         RW: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         RS: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         RE: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         QA: {
             ar: {
-                windowMessage: "Ù„Ø§ ØªØ±Ù‰ Ù…ØªØµÙØ­ PayPal Ø§Ù„Ø¢Ù…Ù†ØŸ Ø³Ù†Ø³Ø§Ø¹Ø¯Ùƒ ÙÙŠ Ø¥Ø¹Ø§Ø¯Ø© ÙØªØ­ Ø§Ù„Ù†Ø§ÙØ°Ø© Ù„Ø§Ø³ØªÙƒÙ…Ø§Ù„ Ù…Ø´ØªØ±ÙŠØ§ØªÙƒ. Â  ",
-                continue: "Ù…ØªØ§Ø¨Ø¹Ø©"
+                windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                continue: "متابعة"
             },
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         PY: {
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         PW: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat. ",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         PN: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat. ",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         PM: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         PG: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat. ",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         PF: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         PE: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         PA: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         OM: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             ar: {
-                windowMessage: "Ù„Ø§ ØªØ±Ù‰ Ù…ØªØµÙØ­ PayPal Ø§Ù„Ø¢Ù…Ù†ØŸ Ø³Ù†Ø³Ø§Ø¹Ø¯Ùƒ ÙÙŠ Ø¥Ø¹Ø§Ø¯Ø© ÙØªØ­ Ø§Ù„Ù†Ø§ÙØ°Ø© Ù„Ø§Ø³ØªÙƒÙ…Ø§Ù„ Ù…Ø´ØªØ±ÙŠØ§ØªÙƒ. Â  ",
-                continue: "Ù…ØªØ§Ø¨Ø¹Ø©"
+                windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                continue: "متابعة"
             }
         },
         NU: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat. ",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         NR: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat. ",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         NP: {
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         NI: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         NG: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         NF: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat. ",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         NE: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         NC: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         NA: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         MZ: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         MW: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         MV: {
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         MU: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         MT: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         MS: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         MR: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         MQ: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         MN: {
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         ML: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         MK: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         MH: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat. ",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         MG: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         ME: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         MD: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         MC: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         MA: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             ar: {
-                windowMessage: "Ù„Ø§ ØªØ±Ù‰ Ù…ØªØµÙØ­ PayPal Ø§Ù„Ø¢Ù…Ù†ØŸ Ø³Ù†Ø³Ø§Ø¹Ø¯Ùƒ ÙÙŠ Ø¥Ø¹Ø§Ø¯Ø© ÙØªØ­ Ø§Ù„Ù†Ø§ÙØ°Ø© Ù„Ø§Ø³ØªÙƒÙ…Ø§Ù„ Ù…Ø´ØªØ±ÙŠØ§ØªÙƒ. Â  ",
-                continue: "Ù…ØªØ§Ø¨Ø¹Ø©"
+                windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                continue: "متابعة"
             }
         },
         LS: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         LK: {
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         LI: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         LC: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         LA: {
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         KZ: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         KY: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         KW: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             ar: {
-                windowMessage: "Ù„Ø§ ØªØ±Ù‰ Ù…ØªØµÙØ­ PayPal Ø§Ù„Ø¢Ù…Ù†ØŸ Ø³Ù†Ø³Ø§Ø¹Ø¯Ùƒ ÙÙŠ Ø¥Ø¹Ø§Ø¯Ø© ÙØªØ­ Ø§Ù„Ù†Ø§ÙØ°Ø© Ù„Ø§Ø³ØªÙƒÙ…Ø§Ù„ Ù…Ø´ØªØ±ÙŠØ§ØªÙƒ. Â  ",
-                continue: "Ù…ØªØ§Ø¨Ø¹Ø©"
+                windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                continue: "متابعة"
             }
         },
         KN: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         KM: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         KI: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat. ",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         KH: {
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         KG: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         KE: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         JO: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             ar: {
-                windowMessage: "Ù„Ø§ ØªØ±Ù‰ Ù…ØªØµÙØ­ PayPal Ø§Ù„Ø¢Ù…Ù†ØŸ Ø³Ù†Ø³Ø§Ø¹Ø¯Ùƒ ÙÙŠ Ø¥Ø¹Ø§Ø¯Ø© ÙØªØ­ Ø§Ù„Ù†Ø§ÙØ°Ø© Ù„Ø§Ø³ØªÙƒÙ…Ø§Ù„ Ù…Ø´ØªØ±ÙŠØ§ØªÙƒ. Â  ",
-                continue: "Ù…ØªØ§Ø¨Ø¹Ø©"
+                windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                continue: "متابعة"
             }
         },
         JM: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         IS: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         HR: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         HN: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         GY: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         GW: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         GT: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         GP: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         GN: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         GM: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         GL: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             da: {
-                windowMessage: "Kan du ikke se PayPals sikre browser? Vi hjÃ¦lper dig med at genstarte vinduet, sÃ¥ du kan betale.",
-                continue: "FortsÃ¦t"
+                windowMessage: "Kan du ikke se PayPals sikre browser? Vi hjælper dig med at genstarte vinduet, så du kan betale.",
+                continue: "Fortsæt"
             }
         },
         GI: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         GF: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         GE: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         GD: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         GA: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         FO: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             da: {
-                windowMessage: "Kan du ikke se PayPals sikre browser? Vi hjÃ¦lper dig med at genstarte vinduet, sÃ¥ du kan betale.",
-                continue: "FortsÃ¦t"
+                windowMessage: "Kan du ikke se PayPals sikre browser? Vi hjælper dig med at genstarte vinduet, så du kan betale.",
+                continue: "Fortsæt"
             }
         },
         FM: {
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         FK: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         FJ: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat. ",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         ET: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         ER: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         EG: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             ar: {
-                windowMessage: "Ù„Ø§ ØªØ±Ù‰ Ù…ØªØµÙØ­ PayPal Ø§Ù„Ø¢Ù…Ù†ØŸ Ø³Ù†Ø³Ø§Ø¹Ø¯Ùƒ ÙÙŠ Ø¥Ø¹Ø§Ø¯Ø© ÙØªØ­ Ø§Ù„Ù†Ø§ÙØ°Ø© Ù„Ø§Ø³ØªÙƒÙ…Ø§Ù„ Ù…Ø´ØªØ±ÙŠØ§ØªÙƒ. Â  ",
-                continue: "Ù…ØªØ§Ø¨Ø¹Ø©"
+                windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                continue: "متابعة"
             }
         },
         EC: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         DZ: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             ar: {
-                windowMessage: "Ù„Ø§ ØªØ±Ù‰ Ù…ØªØµÙØ­ PayPal Ø§Ù„Ø¢Ù…Ù†ØŸ Ø³Ù†Ø³Ø§Ø¹Ø¯Ùƒ ÙÙŠ Ø¥Ø¹Ø§Ø¯Ø© ÙØªØ­ Ø§Ù„Ù†Ø§ÙØ°Ø© Ù„Ø§Ø³ØªÙƒÙ…Ø§Ù„ Ù…Ø´ØªØ±ÙŠØ§ØªÙƒ. Â  ",
-                continue: "Ù…ØªØ§Ø¨Ø¹Ø©"
+                windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                continue: "متابعة"
             }
         },
         DO: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         DM: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         DJ: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         CY: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         CV: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         CR: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         CO: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         CM: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         CL: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         CK: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         CI: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         CG: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         CD: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         BZ: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         BY: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         BW: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         BT: {
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         BS: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         BO: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         BN: {
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         BM: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         BJ: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         BI: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         BH: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             ar: {
-                windowMessage: "Ù„Ø§ ØªØ±Ù‰ Ù…ØªØµÙØ­ PayPal Ø§Ù„Ø¢Ù…Ù†ØŸ Ø³Ù†Ø³Ø§Ø¹Ø¯Ùƒ ÙÙŠ Ø¥Ø¹Ø§Ø¯Ø© ÙØªØ­ Ø§Ù„Ù†Ø§ÙØ°Ø© Ù„Ø§Ø³ØªÙƒÙ…Ø§Ù„ Ù…Ø´ØªØ±ÙŠØ§ØªÙƒ. Â  ",
-                continue: "Ù…ØªØ§Ø¨Ø¹Ø©"
+                windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                continue: "متابعة"
             }
         },
         BG: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         BF: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             }
         },
         BB: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         BA: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         AZ: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         AW: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         AO: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         AN: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         AM: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         AL: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         AI: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         AG: {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         AE: {
             ar: {
-                windowMessage: "Ù„Ø§ ØªØ±Ù‰ Ù…ØªØµÙØ­ PayPal Ø§Ù„Ø¢Ù…Ù†ØŸ Ø³Ù†Ø³Ø§Ø¹Ø¯Ùƒ ÙÙŠ Ø¥Ø¹Ø§Ø¯Ø© ÙØªØ­ Ø§Ù„Ù†Ø§ÙØ°Ø© Ù„Ø§Ø³ØªÙƒÙ…Ø§Ù„ Ù…Ø´ØªØ±ÙŠØ§ØªÙƒ. Â  ",
-                continue: "Ù…ØªØ§Ø¨Ø¹Ø©"
+                windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                continue: "متابعة"
             },
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         AD: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         CN: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆä»˜æ¬¾ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成付款。  ",
+                continue: "继续"
             }
         },
         GB: {
             fr: {
-                windowMessage: "Vous ne voyez pas le navigateur sÃ©curisÃ© PayPalÂ ? Nous allons vous aider Ã  relancer la fenÃªtre pour effectuer votre achat.Â  ",
+                windowMessage: "Vous ne voyez pas le navigateur sécurisé PayPal ? Nous allons vous aider à relancer la fenêtre pour effectuer votre achat.  ",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? We'll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We'll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         AR: {
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             }
         },
         US: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat. ",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Click to Continue"
             }
         },
         VN: {
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your payment.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
                 continue: "Continue"
             }
         },
         UA: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             ru: {
-                windowMessage: "ÐÐµ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶Ð°ÐµÑ‚ÑÑ Ð±ÐµÐ·Ð¾Ð¿Ð°ÑÐ½Ð°Ñ ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ð° PayPal Ð² Ð±Ñ€Ð°ÑƒÐ·ÐµÑ€Ðµ? ÐœÑ‹ Ð¿Ð¾Ð¼Ð¾Ð¶ÐµÐ¼ Ð²Ð°Ð¼ Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€Ð½Ð¾ Ð·Ð°Ð³Ñ€ÑƒÐ·Ð¸Ñ‚ÑŒ Ð¾ÐºÐ½Ð¾, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð·Ð°Ð²ÐµÑ€ÑˆÐ¸Ñ‚ÑŒ Ð¿Ð¾ÐºÑƒÐ¿ÐºÑƒ.Â  ",
-                continue: "ÐŸÑ€Ð¾Ð´Ð¾Ð»Ð¶Ð¸Ñ‚ÑŒ"
+                windowMessage: "Не отображается безопасная страница PayPal в браузере? Мы поможем вам повторно загрузить окно, чтобы завершить покупку.  ",
+                continue: "Продолжить"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         TW: {
             zh: {
-                windowMessage: "çœ‹ä¸åˆ°å®‰å…¨é€£ç·šçš„ PayPal ç€è¦½å™¨ï¼Ÿæˆ‘å€‘å°‡æœƒé‡æ–°å•Ÿå‹•è¦–çª—ä»¥å®Œæˆä»˜æ¬¾ã€‚Â  ",
-                continue: "ç¹¼çºŒ"
+                windowMessage: "看不到安全連線的 PayPal 瀏覽器？我們將會重新啟動視窗以完成付款。  ",
+                continue: "繼續"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your payment.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
                 continue: "Continue"
             }
         },
         TR: {
             tr: {
-                windowMessage: "GÃ¼venli PayPal tarayÄ±cÄ±sÄ±nÄ± gÃ¶rmÃ¼yor musunuz? AlÄ±ÅŸveriÅŸinizi tamamlamak iÃ§in pencereyi yeniden baÅŸlatmanÄ±za yardÄ±mcÄ± olacaÄŸÄ±z.Â  ",
+                windowMessage: "Güvenli PayPal tarayıcısını görmüyor musunuz? Alışverişinizi tamamlamak için pencereyi yeniden başlatmanıza yardımcı olacağız.  ",
                 continue: "Devam"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         TH: {
             th: {
-                windowMessage: "à¸–à¹‰à¸²à¸„à¸¸à¸“à¹„à¸¡à¹ˆà¹€à¸«à¹‡à¸™à¹€à¸šà¸£à¸²à¸§à¹Œà¹€à¸‹à¸­à¸£à¹Œà¸—à¸µà¹ˆà¸¡à¸µà¸£à¸°à¸šà¸šà¸„à¸§à¸²à¸¡à¸›à¸¥à¸­à¸”à¸ à¸±à¸¢à¸‚à¸­à¸‡ PayPal à¹€à¸£à¸²à¸ˆà¸°à¸Šà¹ˆà¸§à¸¢à¸„à¸¸à¸“à¹€à¸›à¸´à¸”à¸«à¸™à¹‰à¸²à¸•à¹ˆà¸²à¸‡à¸­à¸µà¸à¸„à¸£à¸±à¹‰à¸‡à¹€à¸žà¸·à¹ˆà¸­à¸Šà¸³à¸£à¸°à¹€à¸‡à¸´à¸™à¹ƒà¸«à¹‰à¹€à¸£à¸µà¸¢à¸šà¸£à¹‰à¸­à¸¢ ",
-                continue: "à¸”à¸³à¹€à¸™à¸´à¸™à¸à¸²à¸£à¸•à¹ˆà¸­"
+                windowMessage: "ถ้าคุณไม่เห็นเบราว์เซอร์ที่มีระบบความปลอดภัยของ PayPal เราจะช่วยคุณเปิดหน้าต่างอีกครั้งเพื่อชำระเงินให้เรียบร้อย ",
+                continue: "ดำเนินการต่อ"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your payment.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
                 continue: "Continue"
             }
         },
         SK: {
             sk: {
-                windowMessage: "Nezobrazuje sa vÃ¡m zabezpeÄenÃ½ prehliadaÄ PayPal? PomÃ´Å¾eme vÃ¡m znova otvoriÅ¥ okno, aby ste mohli nÃ¡kup dokonÄiÅ¥.Â  ",
-                continue: "PokraÄovaÅ¥"
+                windowMessage: "Nezobrazuje sa vám zabezpečený prehliadač PayPal? Pomôžeme vám znova otvoriť okno, aby ste mohli nákup dokončiť.  ",
+                continue: "Pokračovať"
             },
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         SI: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         SG: {
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your payment.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
                 continue: "Continue"
             }
         },
         SE: {
             sv: {
-                windowMessage: "Ser du inte den sÃ¤kra PayPal-webblÃ¤saren? Vi hjÃ¤lper dig att starta om fÃ¶nstret fÃ¶r att slutfÃ¶ra ditt kÃ¶p. ",
-                continue: "FortsÃ¤tt"
+                windowMessage: "Ser du inte den säkra PayPal-webbläsaren? Vi hjälper dig att starta om fönstret för att slutföra ditt köp. ",
+                continue: "Fortsätt"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         RU: {
             ru: {
-                windowMessage: "ÐÐµ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶Ð°ÐµÑ‚ÑÑ Ð±ÐµÐ·Ð¾Ð¿Ð°ÑÐ½Ð°Ñ ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ð° PayPal Ð² Ð±Ñ€Ð°ÑƒÐ·ÐµÑ€Ðµ? ÐœÑ‹ Ð¿Ð¾Ð¼Ð¾Ð¶ÐµÐ¼ Ð²Ð°Ð¼ Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€Ð½Ð¾ Ð·Ð°Ð³Ñ€ÑƒÐ·Ð¸Ñ‚ÑŒ Ð¾ÐºÐ½Ð¾, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð·Ð°Ð²ÐµÑ€ÑˆÐ¸Ñ‚ÑŒ Ð¿Ð¾ÐºÑƒÐ¿ÐºÑƒ.",
-                continue: "ÐŸÑ€Ð¾Ð´Ð¾Ð»Ð¶Ð¸Ñ‚ÑŒ"
+                windowMessage: "Не отображается безопасная страница PayPal в браузере? Мы поможем вам повторно загрузить окно, чтобы завершить покупку.",
+                continue: "Продолжить"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         RO: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         PT: {
             pt: {
-                windowMessage: "NÃ£o vÃª a indicaÃ§Ã£o de sessÃ£o segura PayPal no browser? Vamos ajudar a reabrir a janela para que possa concluir a sua compra.",
+                windowMessage: "Não vê a indicação de sessão segura PayPal no browser? Vamos ajudar a reabrir a janela para que possa concluir a sua compra.",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         PL: {
             pl: {
-                windowMessage: "Nie widzisz bezpiecznej przeglÄ…darki PayPal? PomoÅ¼emy Ci ponownie uruchomiÄ‡ to okno w celu dokonania zakupu.Â  ",
+                windowMessage: "Nie widzisz bezpiecznej przeglądarki PayPal? Pomożemy Ci ponownie uruchomić to okno w celu dokonania zakupu.  ",
                 continue: "Kontynuuj"
             },
             en: {
-                windowMessage: "You donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "You don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         PH: {
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your payment.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
                 continue: "Continue"
             }
         },
         NZ: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆä»˜æ¬¾ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成付款。  ",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  relancer la fenÃªtre pour effectuer votre paiement.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à relancer la fenêtre pour effectuer votre paiement.",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Le ayudaremos a abrir de nuevo la ventana para completar su pago.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Le ayudaremos a abrir de nuevo la ventana para completar su pago.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your payment.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
                 continue: "Continue"
             }
         },
         NO: {
             no: {
-                windowMessage: "Ser du ikke den sikre PayPal-nettleseren? Vi hjelper deg med Ã¥ starte vinduet pÃ¥ nytt sÃ¥ du kan fullfÃ¸re kjÃ¸pet.Â  ",
+                windowMessage: "Ser du ikke den sikre PayPal-nettleseren? Vi hjelper deg med å starte vinduet på nytt så du kan fullføre kjøpet.  ",
                 continue: "Fortsett"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         NL: {
             nl: {
-                windowMessage: "Ziet u geen beveiligde PayPal-browser? We helpen u het venster opnieuw te openen om uw aankoop te voltooien.Â  ",
+                windowMessage: "Ziet u geen beveiligde PayPal-browser? We helpen u het venster opnieuw te openen om uw aankoop te voltooien.  ",
                 continue: "Doorgaan"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         MY: {
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your payment.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
                 continue: "Continue"
             }
         },
         MX: {
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         LV: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             ru: {
-                windowMessage: "ÐÐµ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶Ð°ÐµÑ‚ÑÑ Ð±ÐµÐ·Ð¾Ð¿Ð°ÑÐ½Ð°Ñ ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ð° PayPal Ð² Ð±Ñ€Ð°ÑƒÐ·ÐµÑ€Ðµ? ÐœÑ‹ Ð¿Ð¾Ð¼Ð¾Ð¶ÐµÐ¼ Ð²Ð°Ð¼ Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€Ð½Ð¾ Ð·Ð°Ð³Ñ€ÑƒÐ·Ð¸Ñ‚ÑŒ Ð¾ÐºÐ½Ð¾, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð·Ð°Ð²ÐµÑ€ÑˆÐ¸Ñ‚ÑŒ Ð¿Ð¾ÐºÑƒÐ¿ÐºÑƒ.Â  ",
-                continue: "ÐŸÑ€Ð¾Ð´Ð¾Ð»Ð¶Ð¸Ñ‚ÑŒ"
+                windowMessage: "Не отображается безопасная страница PayPal в браузере? Мы поможем вам повторно загрузить окно, чтобы завершить покупку.  ",
+                continue: "Продолжить"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         LU: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             de: {
-                windowMessage: "Das PayPal-Fenster wird nicht angezeigt? Hier kÃ¶nnen Sie es wieder Ã¶ffnen und Ihren Einkauf abschlieÃŸen.",
+                windowMessage: "Das PayPal-Fenster wird nicht angezeigt? Hier können Sie es wieder öffnen und Ihren Einkauf abschließen.",
                 continue: "Weiter"
             }
         },
         LT: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             ru: {
-                windowMessage: "ÐÐµ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶Ð°ÐµÑ‚ÑÑ Ð±ÐµÐ·Ð¾Ð¿Ð°ÑÐ½Ð°Ñ ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ð° PayPal Ð² Ð±Ñ€Ð°ÑƒÐ·ÐµÑ€Ðµ? ÐœÑ‹ Ð¿Ð¾Ð¼Ð¾Ð¶ÐµÐ¼ Ð²Ð°Ð¼ Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€Ð½Ð¾ Ð·Ð°Ð³Ñ€ÑƒÐ·Ð¸Ñ‚ÑŒ Ð¾ÐºÐ½Ð¾, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð·Ð°Ð²ÐµÑ€ÑˆÐ¸Ñ‚ÑŒ Ð¿Ð¾ÐºÑƒÐ¿ÐºÑƒ.Â  ",
-                continue: "ÐŸÑ€Ð¾Ð´Ð¾Ð»Ð¶Ð¸Ñ‚ÑŒ"
+                windowMessage: "Не отображается безопасная страница PayPal в браузере? Мы поможем вам повторно загрузить окно, чтобы завершить покупку.  ",
+                continue: "Продолжить"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         KR: {
             ko: {
-                windowMessage: "ë³´ì•ˆ PayPal ë¸Œë¼ìš°ì €ê°€ ë³´ì´ì§€ ì•Šìœ¼ì‹ ê°€ìš”? ì°½ì„ ë‹¤ì‹œ ì‹¤í–‰í•˜ì—¬ ê²°ì œë¥¼ ì™„ë£Œí•  ìˆ˜ ìžˆë„ë¡ ë„ì™€ë“œë¦¬ê² ìŠµë‹ˆë‹¤.Â  ",
-                continue: "ê³„ì†"
+                windowMessage: "보안 PayPal 브라우저가 보이지 않으신가요? 창을 다시 실행하여 결제를 완료할 수 있도록 도와드리겠습니다.  ",
+                continue: "계속"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your payment.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
                 continue: "Continue"
             }
         },
         JP: {
             ja: {
-                windowMessage: "ã‚»ã‚­ãƒ¥ã‚¢ãªãƒ–ãƒ©ã‚¦ã‚¶ãŒè¡¨ç¤ºã•ã‚Œãªã„å ´åˆã¯ã€ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’å†èµ·å‹•ã—ã¦ã€æ”¯æ‰•ã„ã‚’å®Œäº†ã§ãã‚‹ã‚ˆã†ãŠæ‰‹ä¼ã„ã„ãŸã—ã¾ã™ã€‚",
-                continue: "ç¶šè¡Œ"
+                windowMessage: "セキュアなブラウザが表示されない場合は、ウィンドウを再起動して、支払いを完了できるようお手伝いいたします。",
+                continue: "続行"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your payment.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
                 continue: "Continue"
             }
         },
         IT: {
             it: {
-                windowMessage: "Non vedi la pagina sicura di PayPal? Ti aiuteremo a riaprire la finestra per completare l'acquisto.Â  ",
+                windowMessage: "Non vedi la pagina sicura di PayPal? Ti aiuteremo a riaprire la finestra per completare l'acquisto.  ",
                 continue: "Continua"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         IN: {
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         IL: {
             he: {
-                windowMessage: "×œ× ×¨×•××” ××ª ×“×¤×“×¤×Ÿ PayPal ×”×ž××•×‘×˜×—? × ×¢×–×•×¨ ×œ×š ×œ×¤×ª×•×— ×ž×—×“×© ××ª ×”×—×œ×•×Ÿ ×›×“×™ ×œ×”×©×œ×™× ××ª ×”×§× ×™×™×” ×©×œ×š.Â  ",
-                continue: "×”×ž×©×š"
+                windowMessage: "לא רואה את דפדפן PayPal המאובטח? נעזור לך לפתוח מחדש את החלון כדי להשלים את הקנייה שלך.  ",
+                continue: "המשך"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         IE: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         HU: {
             hu: {
-                windowMessage: "Nem lÃ¡tja a biztonsÃ¡gos PayPal-bÃ¶ngÃ©szÅ‘t? SegÃ­tÃ¼nk Ãºjra betÃ¶lteni az ablakot, hogy befejezhesse a vÃ¡sÃ¡rlÃ¡st.Â  ",
-                continue: "FolytatÃ¡s"
+                windowMessage: "Nem látja a biztonságos PayPal-böngészőt? Segítünk újra betölteni az ablakot, hogy befejezhesse a vásárlást.  ",
+                continue: "Folytatás"
             },
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         ID: {
             id: {
-                windowMessage: "Browser PayPal yang aman tidak terlihat? Kami akan membantu menampilkan ulang jendela untuk menyelesaikan pembayaran Anda.Â  ",
+                windowMessage: "Browser PayPal yang aman tidak terlihat? Kami akan membantu menampilkan ulang jendela untuk menyelesaikan pembayaran Anda.  ",
                 continue: "Lanjutkan"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your payment.Â  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
                 continue: "Continue"
             }
         },
         HK: {
             zh: {
-                windowMessage: "çœ‹ä¸åˆ°å®‰å…¨çš„ PayPal ç€è¦½å™¨è¦–çª—ï¼Ÿæˆ‘å€‘æœƒåŠ©ä½ é‡æ–°é–‹å•Ÿè¦–çª—ï¼Œä»¥å®Œæˆä»˜æ¬¾ã€‚",
-                continue: "ç¹¼çºŒ"
+                windowMessage: "看不到安全的 PayPal 瀏覽器視窗？我們會助你重新開啟視窗，以完成付款。",
+                continue: "繼續"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your payment.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
                 continue: "Continue"
             }
         },
         "GROUP-LATAM": {
             zh: {
-                windowMessage: "æ²¡çœ‹åˆ°PayPalä»˜æ¬¾é¡µé¢ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没看到PayPal付款页面？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Vous ne voyez pas la page de Paiement PayPal ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No puede ver la pÃ¡gina de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
+                windowMessage: "¿No puede ver la página de pago de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Donâ€™t see the PayPal payment page? Weâ€™ll help you re-launch the window to complete your purchase.",
+                windowMessage: "Don’t see the PayPal payment page? We’ll help you re-launch the window to complete your purchase.",
                 continue: "Continue"
             }
         },
         "GROUP-EMEA": {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             ru: {
-                windowMessage: "ÐÐµ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶Ð°ÐµÑ‚ÑÑ Ð±ÐµÐ·Ð¾Ð¿Ð°ÑÐ½Ð°Ñ ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ð° PayPal Ð² Ð±Ñ€Ð°ÑƒÐ·ÐµÑ€Ðµ? ÐœÑ‹ Ð¿Ð¾Ð¼Ð¾Ð¶ÐµÐ¼ Ð²Ð°Ð¼ Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€Ð½Ð¾ Ð·Ð°Ð³Ñ€ÑƒÐ·Ð¸Ñ‚ÑŒ Ð¾ÐºÐ½Ð¾, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð·Ð°Ð²ÐµÑ€ÑˆÐ¸Ñ‚ÑŒ Ð¿Ð¾ÐºÑƒÐ¿ÐºÑƒ.Â  ",
-                continue: "ÐŸÑ€Ð¾Ð´Ð¾Ð»Ð¶Ð¸Ñ‚ÑŒ"
+                windowMessage: "Не отображается безопасная страница PayPal в браузере? Мы поможем вам повторно загрузить окно, чтобы завершить покупку.  ",
+                continue: "Продолжить"
             },
             pt: {
-                windowMessage: "NÃ£o vÃª a indicaÃ§Ã£o de sessÃ£o segura PayPal no browser? Vamos ajudar a reabrir a janela para que possa concluir a sua compra.",
+                windowMessage: "Não vê a indicação de sessão segura PayPal no browser? Vamos ajudar a reabrir a janela para que possa concluir a sua compra.",
                 continue: "Continuar"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             de: {
-                windowMessage: "Sie sehen das sichere Browserfenster von PayPal nicht? Hier kÃ¶nnen Sie es wieder Ã¶ffnen und Ihren Einkauf abschlieÃŸen.",
+                windowMessage: "Sie sehen das sichere Browserfenster von PayPal nicht? Hier können Sie es wieder öffnen und Ihren Einkauf abschließen.",
                 continue: "Weiter"
             },
             da: {
-                windowMessage: "Kan du ikke se PayPals sikre browser? Vi hjÃ¦lper dig med at genstarte vinduet, sÃ¥ du kan betale.",
-                continue: "FortsÃ¦t"
+                windowMessage: "Kan du ikke se PayPals sikre browser? Vi hjælper dig med at genstarte vinduet, så du kan betale.",
+                continue: "Fortsæt"
             },
             ar: {
-                windowMessage: "Ù„Ø§ ØªØ±Ù‰ Ù…ØªØµÙØ­ PayPal Ø§Ù„Ø¢Ù…Ù†ØŸ Ø³Ù†Ø³Ø§Ø¹Ø¯Ùƒ ÙÙŠ Ø¥Ø¹Ø§Ø¯Ø© ÙØªØ­ Ø§Ù„Ù†Ø§ÙØ°Ø© Ù„Ø§Ø³ØªÙƒÙ…Ø§Ù„ Ù…Ø´ØªØ±ÙŠØ§ØªÙƒ. Â  ",
-                continue: "Ù…ØªØ§Ø¨Ø¹Ø©"
+                windowMessage: "لا ترى متصفح PayPal الآمن؟ سنساعدك في إعادة فتح النافذة لاستكمال مشترياتك.   ",
+                continue: "متابعة"
             }
         },
         "GROUP-APAC": {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。",
+                continue: "继续"
             },
             ko: {
-                windowMessage: "ë³´ì•ˆ PayPal ë¸Œë¼ìš°ì €ê°€ ë³´ì´ì§€ ì•Šìœ¼ì‹ ê°€ìš”? ì°½ì„ ë‹¤ì‹œ ì‹¤í–‰í•˜ì—¬ êµ¬ë§¤ë¥¼ ì™„ë£Œí•  ìˆ˜ ìžˆë„ë¡ ë„ì™€ë“œë¦¬ê² ìŠµë‹ˆë‹¤. ",
-                continue: "ê³„ì†"
+                windowMessage: "보안 PayPal 브라우저가 보이지 않으신가요? 창을 다시 실행하여 구매를 완료할 수 있도록 도와드리겠습니다. ",
+                continue: "계속"
             },
             id: {
                 windowMessage: "Browser PayPal yang aman tidak terlihat? Kami akan membantu menampilkan ulang jendela untuk menyelesaikan pembelian Anda. ",
                 continue: "Lanjutkan"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat. ",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat. ",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda completar su compra. ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Donâ€™t see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.  ",
+                windowMessage: "Don’t see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         GR: {
             el: {
-                windowMessage: "Î”ÎµÎ½ Î²Î»Î­Ï€ÎµÏ„Îµ Ï„Î¿ Î±ÏƒÏ†Î±Î»Î­Ï‚ Ï€ÏÏŒÎ³ÏÎ±Î¼Î¼Î± Ï€ÎµÏÎ¹Î®Î³Î·ÏƒÎ·Ï‚ PayPal; Î˜Î± ÏƒÎ±Ï‚ Î²Î¿Î·Î¸Î®ÏƒÎ¿Ï…Î¼Îµ Î½Î± ÎµÏ€Î±Î½ÎµÎºÎºÎ¹Î½Î®ÏƒÎµÏ„Îµ Ï„Î¿ Ï€Î±ÏÎ¬Î¸Ï…ÏÎ¿ Î³Î¹Î± Î½Î± Î¿Î»Î¿ÎºÎ»Î·ÏÏŽÏƒÎµÏ„Îµ Ï„Î·Î½ Î±Î³Î¿ÏÎ¬ ÏƒÎ±Ï‚.Â  ",
-                continue: "Î£Ï…Î½Î­Ï‡ÎµÎ¹Î±"
+                windowMessage: "Δεν βλέπετε το ασφαλές πρόγραμμα περιήγησης PayPal; Θα σας βοηθήσουμε να επανεκκινήσετε το παράθυρο για να ολοκληρώσετε την αγορά σας.  ",
+                continue: "Συνέχεια"
             },
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         FR: {
             fr: {
-                windowMessage: "Vous ne voyez pas le navigateur sÃ©curisÃ© PayPalÂ ? Nous allons vous aider Ã  relancer la fenÃªtre pour effectuer votre achat.Â  ",
+                windowMessage: "Vous ne voyez pas le navigateur sécurisé PayPal ? Nous allons vous aider à relancer la fenêtre pour effectuer votre achat.  ",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         ES: {
             es: {
-                windowMessage: "Â¿No ve el sÃ­mbolo de navegaciÃ³n segura de PayPal? Le ayudaremos a abrir de nuevo la ventana para completar la compra. ",
+                windowMessage: "¿No ve el símbolo de navegación segura de PayPal? Le ayudaremos a abrir de nuevo la ventana para completar la compra. ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         FI: {
             fi: {
-                windowMessage: "EikÃ¶ suojattua PayPal-selainta nÃ¤y? Autamme avaamaan ikkunan uudelleen oston viimeistelyÃ¤ varten.Â  ",
+                windowMessage: "Eikö suojattua PayPal-selainta näy? Autamme avaamaan ikkunan uudelleen oston viimeistelyä varten.  ",
                 continue: "Jatka"
             },
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         EE: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             ru: {
-                windowMessage: "ÐÐµ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶Ð°ÐµÑ‚ÑÑ Ð±ÐµÐ·Ð¾Ð¿Ð°ÑÐ½Ð°Ñ ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ð° PayPal Ð² Ð±Ñ€Ð°ÑƒÐ·ÐµÑ€Ðµ? ÐœÑ‹ Ð¿Ð¾Ð¼Ð¾Ð¶ÐµÐ¼ Ð²Ð°Ð¼ Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€Ð½Ð¾ Ð·Ð°Ð³Ñ€ÑƒÐ·Ð¸Ñ‚ÑŒ Ð¾ÐºÐ½Ð¾, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð·Ð°Ð²ÐµÑ€ÑˆÐ¸Ñ‚ÑŒ Ð¿Ð¾ÐºÑƒÐ¿ÐºÑƒ.Â  ",
-                continue: "ÐŸÑ€Ð¾Ð´Ð¾Ð»Ð¶Ð¸Ñ‚ÑŒ"
+                windowMessage: "Не отображается безопасная страница PayPal в браузере? Мы поможем вам повторно загрузить окно, чтобы завершить покупку.  ",
+                continue: "Продолжить"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         DK: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             da: {
-                windowMessage: "Kan du ikke se PayPals sikre browser? Vi hjÃ¦lper dig med at genstarte vinduet, sÃ¥ du kan betale.",
-                continue: "FortsÃ¦t"
+                windowMessage: "Kan du ikke se PayPals sikre browser? Vi hjælper dig med at genstarte vinduet, så du kan betale.",
+                continue: "Fortsæt"
             }
         },
         CZ: {
             cs: {
-                windowMessage: "Nezobrazuje se vÃ¡m bezpeÄnÃ½ prohlÃ­Å¾eÄ PayPal? PomÅ¯Å¾eme vÃ¡m okno znovu otevÅ™Ã­t, abyste mohli nÃ¡kup dokonÄit.",
-                continue: "PokraÄovat"
+                windowMessage: "Nezobrazuje se vám bezpečný prohlížeč PayPal? Pomůžeme vám okno znovu otevřít, abyste mohli nákup dokončit.",
+                continue: "Pokračovat"
             },
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆè´­ç‰©ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成购物。  ",
+                continue: "继续"
             },
             fr: {
-                windowMessage: "Le navigateur sÃ©curisÃ© de PayPal n'apparaÃ®t pasÂ ? Nous allons vous aider Ã  rouvrir la fenÃªtre pour finaliser votre achat.",
+                windowMessage: "Le navigateur sécurisé de PayPal n'apparaît pas ? Nous allons vous aider à rouvrir la fenêtre pour finaliser votre achat.",
                 continue: "Continuer"
             },
             es: {
-                windowMessage: "Â¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.Â  ",
+                windowMessage: "¿No ve el navegador seguro de PayPal? Abriremos la ventana nuevamente para que pueda concluir su compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         DE: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             de: {
-                windowMessage: "Sie sehen das sichere Browserfenster von PayPal nicht? Hier kÃ¶nnen Sie es wieder Ã¶ffnen und Ihren Einkauf abschlieÃŸen.",
+                windowMessage: "Sie sehen das sichere Browserfenster von PayPal nicht? Hier können Sie es wieder öffnen und Ihren Einkauf abschließen.",
                 continue: "Weiter"
             }
         },
         CH: {
             fr: {
-                windowMessage: "Vous ne voyez pas le navigateur sÃ©curisÃ© PayPalÂ ? Nous allons vous aider Ã  relancer la fenÃªtre pour effectuer votre achat.Â  ",
+                windowMessage: "Vous ne voyez pas le navigateur sécurisé PayPal ? Nous allons vous aider à relancer la fenêtre pour effectuer votre achat.  ",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             },
             de: {
-                windowMessage: "Sie sehen das sichere Browserfenster von PayPal nicht? Hier kÃ¶nnen Sie es wieder Ã¶ffnen und Ihren Einkauf abschlieÃŸen.",
+                windowMessage: "Sie sehen das sichere Browserfenster von PayPal nicht? Hier können Sie es wieder öffnen und Ihren Einkauf abschließen.",
                 continue: "Weiter"
             }
         },
         CA: {
             fr: {
-                windowMessage: "Vous ne voyez pas le navigateur sÃ©curisÃ© de PayPalÂ ? Nous vous aiderons Ã  relancer la fenÃªtre afin d'effectuer votre achat.Â  ",
+                windowMessage: "Vous ne voyez pas le navigateur sécurisé de PayPal ? Nous vous aiderons à relancer la fenêtre afin d'effectuer votre achat.  ",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you relaunch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you relaunch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         C2: {
             zh: {
-                windowMessage: "æ²¡æœ‰æ‰¾åˆ°å®‰å…¨çš„PayPalæµè§ˆå™¨ï¼Ÿæˆ‘ä»¬å°†å¸®åŠ©æ‚¨é‡å¯çª—å£ä»¥å®Œæˆä»˜æ¬¾ã€‚Â  ",
-                continue: "ç»§ç»­"
+                windowMessage: "没有找到安全的PayPal浏览器？我们将帮助您重启窗口以完成付款。  ",
+                continue: "继续"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your payment.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your payment.  ",
                 continue: "Continue"
             }
         },
         BE: {
             nl: {
-                windowMessage: "Ziet u de beveiligde PayPal-browser niet? We helpen u het venster opnieuw te openen om uw aankoop te voltooien.Â  ",
+                windowMessage: "Ziet u de beveiligde PayPal-browser niet? We helpen u het venster opnieuw te openen om uw aankoop te voltooien.  ",
                 continue: "Doorgaan"
             },
             fr: {
-                windowMessage: "Vous ne voyez pas le navigateur sÃ©curisÃ© PayPalÂ ? Nous allons vous aider Ã  relancer la fenÃªtre pour effectuer votre achat.Â  ",
+                windowMessage: "Vous ne voyez pas le navigateur sécurisé PayPal ? Nous allons vous aider à relancer la fenêtre pour effectuer votre achat.  ",
                 continue: "Continuer"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         BR: {
             pt: {
-                windowMessage: "NÃ£o estÃ¡ vendo o navegador seguro do PayPal? Ajudaremos vocÃª a reabrir a janela para concluir a compra.Â  ",
+                windowMessage: "Não está vendo o navegador seguro do PayPal? Ajudaremos você a reabrir a janela para concluir a compra.  ",
                 continue: "Continuar"
             },
             en: {
-                windowMessage: "Don't see the secure PayPal browser? Weâ€™ll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We’ll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         },
         AU: {
             en: {
-                windowMessage: "Don't see the secure PayPal browser? We'll help you re-launch the window to complete your purchase.Â  ",
+                windowMessage: "Don't see the secure PayPal browser? We'll help you re-launch the window to complete your purchase.  ",
                 continue: "Continue"
             }
         }
@@ -12184,13 +12214,13 @@
                 },
                 componentDidMount: function() {
                     component.log("instantiate_react_component");
-                    var el = ReactDOM.findDOMNode(this), parent = component.init(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.p)({}, this.props), null, el);
+                    var el = ReactDOM.findDOMNode(this), parent = component.init(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.q)({}, this.props), null, el);
                     this.setState({
                         parent: parent
                     }), parent.render(el);
                 },
                 componentDidUpdate: function() {
-                    this.state && this.state.parent && this.state.parent.updateProps(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.p)({}, this.props));
+                    this.state && this.state.parent && this.state.parent.updateProps(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.q)({}, this.props));
                 },
                 componentWillUnmount: function() {
                     this.state && this.state.parent && this.state.parent.destroy();
@@ -12205,12 +12235,12 @@
                     return React.createElement("div", null);
                 }, _proto.componentDidMount = function() {
                     component.log("instantiate_react_component");
-                    var el = ReactDOM.findDOMNode(this), parent = component.init(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.p)({}, this.props), null, el);
+                    var el = ReactDOM.findDOMNode(this), parent = component.init(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.q)({}, this.props), null, el);
                     this.setState({
                         parent: parent
                     }), parent.render(el);
                 }, _proto.componentDidUpdate = function() {
-                    this.state && this.state.parent && this.state.parent.updateProps(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.p)({}, this.props));
+                    this.state && this.state.parent && this.state.parent.updateProps(Object(_lib__WEBPACK_IMPORTED_MODULE_1__.q)({}, this.props));
                 }, _proto.componentWillUnmount = function() {
                     this.state && this.state.parent && this.state.parent.destroy();
                 }, _class;
@@ -12232,11 +12262,11 @@
                 inheritAttrs: !1,
                 mounted: function() {
                     var el = this.$el;
-                    this.parent = component.init(Object(_lib__WEBPACK_IMPORTED_MODULE_0__.p)({}, this.$attrs), null, el), 
+                    this.parent = component.init(Object(_lib__WEBPACK_IMPORTED_MODULE_0__.q)({}, this.$attrs), null, el), 
                     this.parent.render(el);
                 },
                 beforeUpdate: function() {
-                    this.parent && this.$attrs && this.parent.updateProps(Object(_lib__WEBPACK_IMPORTED_MODULE_0__.p)({}, this.$attrs));
+                    this.parent && this.$attrs && this.parent.updateProps(Object(_lib__WEBPACK_IMPORTED_MODULE_0__.q)({}, this.$attrs));
                 }
             };
         }
@@ -12258,6 +12288,11 @@
                     restrict: "E",
                     controller: [ "$scope", "$element", function($scope, $element) {
                         if (component.looseProps && !$scope.props) throw new Error("For angular bindings to work, prop definitions must be passed to zoid.create");
+                        function safeApply() {
+                            if ("$apply" !== $scope.$root.$$phase && "$digest" !== $scope.$root.$$phase) try {
+                                $scope.$apply();
+                            } catch (err) {}
+                        }
                         component.log("instantiate_angular_component");
                         var getProps = function() {
                             var scopeProps;
@@ -12268,15 +12303,11 @@
                                     void 0 !== $scope[_key] && (scopeProps[_key] = $scope[_key]);
                                 }
                             }
-                            return Object(_lib__WEBPACK_IMPORTED_MODULE_0__.L)(scopeProps, {
+                            return Object(_lib__WEBPACK_IMPORTED_MODULE_0__.M)(scopeProps, {
                                 function: function(value) {
                                     return function() {
                                         var result = value.apply(this, arguments);
-                                        return function() {
-                                            if ("$apply" !== $scope.$root.$$phase && "$digest" !== $scope.$root.$$phase) try {
-                                                $scope.$apply();
-                                            } catch (err) {}
-                                        }(), result;
+                                        return safeApply(), result;
                                     };
                                 }
                             });
@@ -12319,7 +12350,7 @@
             var AngularComponent = _ref.Component, NgModule = _ref.NgModule, ElementRef = _ref.ElementRef, NgZone = _ref.NgZone;
             zoid.log("initializing angular2 component");
             var getProps = function(component) {
-                return Object(_lib__WEBPACK_IMPORTED_MODULE_1__.L)(Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, component.internalProps, component.props), {
+                return Object(_lib__WEBPACK_IMPORTED_MODULE_1__.M)(Object(_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.a)({}, component.internalProps, {}, component.props), {
                     function: function(value) {
                         if ("function" == typeof value) return function() {
                             var _this = this, _arguments = arguments;
@@ -12354,8 +12385,9 @@
         }
     };
 }, function(module, exports, __webpack_require__) {
-    var n;
-    n = function() {
+    !function(e, t, n) {
+        module.exports ? module.exports = n() : __webpack_require__(64)("bowser", n);
+    }(0, 0, function() {
         function t(t) {
             function n(e) {
                 var n = t.match(e);
@@ -12608,7 +12640,7 @@
         }, n.isUnsupportedBrowser = o, n.compareVersions = s, n.check = function(e, t, n) {
             return !o(e, t, n);
         }, n._detect = t, n.detect = t, n;
-    }, module.exports ? module.exports = n() : __webpack_require__(64)("bowser", n);
+    });
 }, function(module, __webpack_exports__, __webpack_require__) {
     "use strict";
     __webpack_require__.r(__webpack_exports__);
@@ -12657,13 +12689,13 @@
     "use strict";
     __webpack_require__.r(__webpack_exports__);
     var _lib_beacon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29), _lib_namespace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32), _lib_util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
-    if (__webpack_require__(26), window.paypal && "4.0.277" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
-        version: "4.0.277"
-    }), new Error("PayPal Checkout Integration Script with same version (4.0.277) already loaded on page");
-    if (window.paypal && window.paypal.version && "4.0.277" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
+    if (__webpack_require__(26), window.paypal && "4.0.280" === window.paypal.version) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_same_version", {
+        version: "4.0.280"
+    }), new Error("PayPal Checkout Integration Script with same version (4.0.280) already loaded on page");
+    if (window.paypal && window.paypal.version && "4.0.280" !== window.paypal.version && window.paypal.Button && window.paypal.Button.render) throw Object(_lib_beacon__WEBPACK_IMPORTED_MODULE_0__.a)("bootstrap_already_loaded_different_version", {
         existingVersion: window.paypal.version,
-        version: "4.0.277"
-    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.277");
+        version: "4.0.280"
+    }), new Error("PayPal Checkout Integration Script with different version (" + window.paypal.version + ") already loaded on page, current version: 4.0.280");
     try {
         var _interface = __webpack_require__(65);
         Object(_lib_namespace__WEBPACK_IMPORTED_MODULE_1__.a)(_interface, [ "paypal", "PAYPAL", "ppxo" ], [ "apps" ]);
@@ -12952,9 +12984,7 @@
             return config.a.inlinedCardFieldUrls[props.env || config.a.env] + "/init3ds";
         },
         get domain() {
-            var _extends2;
-            return Object(esm_extends.a)({}, config.a.paypalDomains, ((_extends2 = {})[constants.t.LOCAL] = /^http:\/\/localhost.paypal.com:\d+$/, 
-            _extends2));
+            return Object(esm_extends.a)({}, config.a.paypalDomains);
         },
         scrolling: !0,
         props: {
@@ -13013,7 +13043,7 @@
             }
         },
         containerTemplate: containerTemplate
-    }), cross_domain_utils_src = __webpack_require__(7), pptm = (noContentFoundInContainer = !1, 
+    }), cross_domain_utils_src = __webpack_require__(7), src_lib = __webpack_require__(5), pptm = (noContentFoundInContainer = !1, 
     callback = "__pptmLoadedWithNoContent", obj = {
         reloadPptmScript: function(clientId) {
             !function tryCreatePptmScript() {
@@ -13321,7 +13351,7 @@
             returnToken && logReturn(returnToken);
         }, 1);
     }
-    var _FUNDING_CONFIG, _CARD_CONFIG, integrations = __webpack_require__(27), src_lib = __webpack_require__(5), integrations_checkout = __webpack_require__(31), OPTYPE = {
+    var _FUNDING_CONFIG, _CARD_CONFIG, integrations = __webpack_require__(27), integrations_checkout = __webpack_require__(31), OPTYPE = {
         PAYMENT: "payment",
         CANCEL: "cancel"
     }, CONTINGENCY = {
@@ -13331,8 +13361,8 @@
         return {
             env: props.env = props.env || config.a.env,
             payment: props.payment,
-            onAuthorize: Object(src_lib.G)(props.onAuthorize),
-            onCancel: Object(src_lib.G)(props.onCancel || src_lib.E)
+            onAuthorize: Object(src_lib.H)(props.onAuthorize),
+            onCancel: Object(src_lib.H)(props.onCancel || src_lib.F)
         };
     }
     function awaitPopupBridge(Button) {
@@ -14033,27 +14063,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         AE: {
@@ -14067,35 +14097,35 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             },
             ar: {
-                checkout: "Ø§Ù„Ø³Ø¯Ø§Ø¯ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:pp} {logo:paypal}",
-                safer_tag: "Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„Ø£Ø³Ù‡Ù„ ÙˆØ§Ù„Ø£ÙƒØ«Ø± Ø£Ù…Ø§Ù†Ø§Ù‹ ÙÙŠ Ø§Ù„Ø¯ÙØ¹",
-                later_tag: "Ø§Ø´ØªØ±Ù Ø§Ù„Ø¢Ù†ØŒ ÙˆØ³Ø¯Ù‘Ø¯ Ø¹Ù„Ù‰ Ø¯ÙØ¹Ø§Øª",
-                pay: "Ø¯ÙØ¹ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} Ø´Ø±Ø§Ø¡ Ø§Ù„Ø¢Ù†",
-                poweredBy: "Ù…Ø¯Ø¹ÙˆÙ… Ù…Ù† {logo:paypal}"
+                checkout: "السداد بواسطة {logo:pp} {logo:paypal}",
+                safer_tag: "الطريقة الأسهل والأكثر أماناً في الدفع",
+                later_tag: "اشترِ الآن، وسدّد على دفعات",
+                pay: "دفع بواسطة {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} شراء الآن",
+                poweredBy: "مدعوم من {logo:paypal}"
             }
         },
         AG: {
@@ -14109,27 +14139,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         AI: {
@@ -14143,27 +14173,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         AL: {
@@ -14187,27 +14217,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         AN: {
@@ -14221,27 +14251,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         AO: {
@@ -14255,34 +14285,34 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         AR: {
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
@@ -14335,27 +14365,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         AZ: {
@@ -14369,27 +14399,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         BA: {
@@ -14413,27 +14443,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         BE: {
@@ -14455,21 +14485,21 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Le rÃ©flexe sÃ©curitÃ© pour payer",
+                safer_tag: "Le réflexe sécurité pour payer",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             }
         },
         BF: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -14481,19 +14511,19 @@
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         BG: {
@@ -14508,12 +14538,12 @@
         },
         BH: {
             ar: {
-                checkout: "Ø§Ù„Ø³Ø¯Ø§Ø¯ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:pp} {logo:paypal}",
-                safer_tag: "Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„Ø£Ø³Ù‡Ù„ ÙˆØ§Ù„Ø£ÙƒØ«Ø± Ø£Ù…Ø§Ù†Ø§Ù‹ ÙÙŠ Ø§Ù„Ø¯ÙØ¹",
-                later_tag: "Ø§Ø´ØªØ±Ù Ø§Ù„Ø¢Ù†ØŒ ÙˆØ³Ø¯Ù‘Ø¯ Ø¹Ù„Ù‰ Ø¯ÙØ¹Ø§Øª",
-                pay: "Ø¯ÙØ¹ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} Ø´Ø±Ø§Ø¡ Ø§Ù„Ø¢Ù†",
-                poweredBy: "Ù…Ø¯Ø¹ÙˆÙ… Ù…Ù† {logo:paypal}"
+                checkout: "السداد بواسطة {logo:pp} {logo:paypal}",
+                safer_tag: "الطريقة الأسهل والأكثر أماناً في الدفع",
+                later_tag: "اشترِ الآن، وسدّد على دفعات",
+                pay: "دفع بواسطة {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} شراء الآن",
+                poweredBy: "مدعوم من {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -14525,37 +14555,37 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         BI: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -14567,29 +14597,29 @@
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         BJ: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -14601,19 +14631,19 @@
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         BM: {
@@ -14627,27 +14657,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         BN: {
@@ -14663,8 +14693,8 @@
         BO: {
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
@@ -14679,30 +14709,30 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         BR: {
             pt: {
                 checkout: "{logo:pp} {logo:paypal} Finalizar",
-                safer_tag: "A maneira fÃ¡cil e segura de pagar.",
+                safer_tag: "A maneira fácil e segura de pagar.",
                 later_tag: "Compre agora e pague depois.",
                 pay: "Pague com {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar agora",
                 installment: "{logo:pp} {logo:paypal}  Pagamentos<br>  parcelados",
-                installment_period: "{logo:pp} {logo:paypal}  Pague em atÃ©<br>  [installmentperiod]x sem juros",
+                installment_period: "{logo:pp} {logo:paypal}  Pague em até<br>  [installmentperiod]x sem juros",
                 poweredBy: "Com tecnologia {logo:paypal}"
             },
             en: {
@@ -14727,27 +14757,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         BT: {
@@ -14771,27 +14801,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         BY: {
@@ -14815,37 +14845,37 @@
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         C2: {
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼ã€‚",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式。",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             },
             en: {
                 checkout: "{logo:pp} {logo:paypal} Checkout",
@@ -14867,21 +14897,21 @@
             },
             fr: {
                 checkout: "{logo:pp} {logo:paypal} Payer",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer",
+                safer_tag: "Votre réflexe sécurité pour payer",
                 later_tag: "Acheter. Payer plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             }
         },
         CD: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -14893,19 +14923,19 @@
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         CG: {
@@ -14919,27 +14949,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         CH: {
@@ -14953,11 +14983,11 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Le rÃ©flexe sÃ©curitÃ© pour payer",
+                safer_tag: "Le réflexe sécurité pour payer",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -14971,11 +15001,11 @@
         CI: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -14997,34 +15027,34 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         CL: {
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
@@ -15039,29 +15069,29 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         CM: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -15074,19 +15104,19 @@
         },
         CN: {
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         CO: {
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
@@ -15101,26 +15131,26 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         CR: {
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
@@ -15135,19 +15165,19 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         CV: {
@@ -15161,27 +15191,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         CY: {
@@ -15196,12 +15226,12 @@
         },
         CZ: {
             cs: {
-                checkout: "Zaplatit pÅ™es {logo:pp} {logo:paypal}",
-                safer_tag: "JednoduÅ¡Å¡Ã­ aÂ bezpeÄnÄ›jÅ¡Ã­ zpÅ¯sob placenÃ­",
-                later_tag: "Nakupujte nynÃ­, plaÅ¥te pozdÄ›ji.",
-                pay: "Zaplatit pÅ™es {logo: paypal}",
-                buynow: "Koupit ihned pÅ™es {logo:pp} {logo:paypal}",
-                poweredBy: "VyuÅ¾Ã­vÃ¡ sluÅ¾bu {logo:paypal}"
+                checkout: "Zaplatit přes {logo:pp} {logo:paypal}",
+                safer_tag: "Jednodušší a bezpečnější způsob placení",
+                later_tag: "Nakupujte nyní, plaťte později.",
+                pay: "Zaplatit přes {logo: paypal}",
+                buynow: "Koupit ihned přes {logo:pp} {logo:paypal}",
+                poweredBy: "Využívá službu {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -15213,33 +15243,33 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         DE: {
             de: {
                 checkout: "Direkt zu {logo:pp} {logo:paypal}",
-                safer_tag: "Ãœberall schnell und sicher bezahlen.",
+                safer_tag: "Überall schnell und sicher bezahlen.",
                 later_tag: "Jetzt bei uns bequem in Raten zahlen.",
                 pay: "Mit {logo:paypal} zahlen",
                 buynow: "{logo:pp} {logo:paypal} Jetzt kaufen",
@@ -15257,11 +15287,11 @@
         DJ: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -15273,28 +15303,28 @@
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         DK: {
             da: {
                 checkout: "{logo:pp} {logo:paypal} Betal",
                 safer_tag: "Betal nemt og sikkert",
-                later_tag: "KÃ¸b nu, betal senere.",
+                later_tag: "Køb nu, betal senere.",
                 pay: "Betal med {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} KÃ¸b nu",
+                buynow: "{logo:pp} {logo:paypal} Køb nu",
                 poweredBy: "Leveret af {logo:paypal}"
             },
             en: {
@@ -15317,34 +15347,34 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         DO: {
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
@@ -15359,29 +15389,29 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         DZ: {
             ar: {
-                checkout: "Ø§Ù„Ø³Ø¯Ø§Ø¯ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:pp} {logo:paypal}",
-                safer_tag: "Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„Ø£Ø³Ù‡Ù„ ÙˆØ§Ù„Ø£ÙƒØ«Ø± Ø£Ù…Ø§Ù†Ø§Ù‹ ÙÙŠ Ø§Ù„Ø¯ÙØ¹",
-                later_tag: "Ø§Ø´ØªØ±Ù Ø§Ù„Ø¢Ù†ØŒ ÙˆØ³Ø¯Ù‘Ø¯ Ø¹Ù„Ù‰ Ø¯ÙØ¹Ø§Øª",
-                pay: "Ø¯ÙØ¹ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} Ø´Ø±Ø§Ø¡ Ø§Ù„Ø¢Ù†",
-                poweredBy: "Ù…Ø¯Ø¹ÙˆÙ… Ù…Ù† {logo:paypal}"
+                checkout: "السداد بواسطة {logo:pp} {logo:paypal}",
+                safer_tag: "الطريقة الأسهل والأكثر أماناً في الدفع",
+                later_tag: "اشترِ الآن، وسدّد على دفعات",
+                pay: "دفع بواسطة {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} شراء الآن",
+                poweredBy: "مدعوم من {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -15393,34 +15423,34 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         EC: {
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
@@ -15435,19 +15465,19 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         EE: {
@@ -15460,46 +15490,46 @@
                 poweredBy: "Powered by {logo:paypal}"
             },
             ru: {
-                checkout: "ÐžÑ„Ð¾Ñ€Ð¼Ð¸Ñ‚ÑŒ Ð·Ð°ÐºÐ°Ð· Ñ‡ÐµÑ€ÐµÐ· {logo:pp} {logo:paypal}",
-                safer_tag: "Ð‘Ð¾Ð»ÐµÐµ Ð±ÐµÐ·Ð¾Ð¿Ð°ÑÐ½Ñ‹Ð¹ Ð¸ Ð¿Ñ€Ð¾ÑÑ‚Ð¾Ð¹ ÑÐ¿Ð¾ÑÐ¾Ð± Ð¾Ð¿Ð»Ð°Ñ‚Ñ‹.",
-                later_tag: "ÐŸÐ¾ÐºÑƒÐ¿Ð°Ð¹Ñ‚Ðµ ÑÐµÐ¹Ñ‡Ð°Ñ, Ð¿Ð»Ð°Ñ‚Ð¸Ñ‚Ðµ Ð¿Ð¾Ñ‚Ð¾Ð¼.",
-                pay: "ÐžÐ¿Ð»Ð°Ñ‚Ð¸Ñ‚ÑŒ Ñ‡ÐµÑ€ÐµÐ· {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} ÐšÑƒÐ¿Ð¸Ñ‚ÑŒ ÑÐµÐ¹Ñ‡Ð°Ñ",
-                poweredBy: "ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ð½Ð¾ {logo:paypal}"
+                checkout: "Оформить заказ через {logo:pp} {logo:paypal}",
+                safer_tag: "Более безопасный и простой способ оплаты.",
+                later_tag: "Покупайте сейчас, платите потом.",
+                pay: "Оплатить через {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} Купить сейчас",
+                poweredBy: "Обработано {logo:paypal}"
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         EG: {
             ar: {
-                checkout: "Ø§Ù„Ø³Ø¯Ø§Ø¯ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:pp} {logo:paypal}",
-                safer_tag: "Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„Ø£Ø³Ù‡Ù„ ÙˆØ§Ù„Ø£ÙƒØ«Ø± Ø£Ù…Ø§Ù†Ø§Ù‹ ÙÙŠ Ø§Ù„Ø¯ÙØ¹",
-                later_tag: "Ø§Ø´ØªØ±Ù Ø§Ù„Ø¢Ù†ØŒ ÙˆØ³Ø¯Ù‘Ø¯ Ø¹Ù„Ù‰ Ø¯ÙØ¹Ø§Øª",
-                pay: "Ø¯ÙØ¹ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} Ø´Ø±Ø§Ø¡ Ø§Ù„Ø¢Ù†",
-                poweredBy: "Ù…Ø¯Ø¹ÙˆÙ… Ù…Ù† {logo:paypal}"
+                checkout: "السداد بواسطة {logo:pp} {logo:paypal}",
+                safer_tag: "الطريقة الأسهل والأكثر أماناً في الدفع",
+                later_tag: "اشترِ الآن، وسدّد على دفعات",
+                pay: "دفع بواسطة {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} شراء الآن",
+                poweredBy: "مدعوم من {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -15511,27 +15541,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         ER: {
@@ -15545,37 +15575,37 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         ES: {
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
-                poweredBy: "TecnologÃ­a de {logo:paypal}"
+                poweredBy: "Tecnología de {logo:paypal}"
             },
             en: {
                 checkout: "{logo:pp} {logo:paypal} Checkout",
@@ -15597,34 +15627,34 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         FI: {
             fi: {
                 checkout: "{logo:pp} {logo:paypal}-maksu",
                 safer_tag: "Turvallisempi ja helpompi maksutapa",
-                later_tag: "Osta nyt. Maksa vÃ¤hitellen.",
+                later_tag: "Osta nyt. Maksa vähitellen.",
                 pay: "{logo:paypal}-maksu",
                 buynow: "{logo:pp} {logo:paypal} Osta nyt",
                 poweredBy: "Palvelun tarjoaa {logo:paypal}"
@@ -15639,27 +15669,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         FJ: {
@@ -15673,27 +15703,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         FK: {
@@ -15707,27 +15737,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         FM: {
@@ -15744,9 +15774,9 @@
             da: {
                 checkout: "Betal med {logo:pp} {logo:paypal}",
                 safer_tag: "Betal nemt og sikkert",
-                later_tag: "KÃ¸b nu, betal senere.",
+                later_tag: "Køb nu, betal senere.",
                 pay: "Betal med {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} KÃ¸b nu",
+                buynow: "{logo:pp} {logo:paypal} Køb nu",
                 poweredBy: "Leveret af {logo:paypal}"
             },
             en: {
@@ -15759,37 +15789,37 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         FR: {
             fr: {
                 checkout: "{logo:pp} {logo:paypal} Payer",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "{logo:pp} {logo:paypal} Pay",
@@ -15803,11 +15833,11 @@
         GA: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -15819,19 +15849,19 @@
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         GB: {
@@ -15855,27 +15885,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         GE: {
@@ -15889,27 +15919,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         GF: {
@@ -15923,27 +15953,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         GI: {
@@ -15957,36 +15987,36 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         GL: {
             da: {
                 checkout: "Betal med {logo:pp} {logo:paypal}",
                 safer_tag: "Betal nemt og sikkert",
-                later_tag: "KÃ¸b nu, betal senere.",
+                later_tag: "Køb nu, betal senere.",
                 pay: "Betal med {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} KÃ¸b nu",
+                buynow: "{logo:pp} {logo:paypal} Køb nu",
                 poweredBy: "Leveret af {logo:paypal}"
             },
             en: {
@@ -15999,27 +16029,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         GM: {
@@ -16033,37 +16063,37 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         GN: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -16075,19 +16105,19 @@
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         GP: {
@@ -16101,37 +16131,37 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         GR: {
             el: {
-                checkout: "ÎŸÎ»Î¿ÎºÎ»Î®ÏÏ‰ÏƒÎ· Î±Î³Î¿ÏÎ¬Ï‚ Î¼Î­ÏƒÏ‰ {logo:pp} {logo:paypal}",
-                safer_tag: "ÎŸ Î±ÏƒÏ†Î±Î»Î­ÏƒÏ„ÎµÏÎ¿Ï‚ ÎºÎ±Î¹ ÎµÏ…ÎºÎ¿Î»ÏŒÏ„ÎµÏÎ¿Ï‚ Ï„ÏÏŒÏ€Î¿Ï‚ Ï€Î»Î·ÏÏ‰Î¼Î®Ï‚",
-                later_tag: "Î‘Î³Î¿ÏÎ¬ÏƒÏ„Îµ Ï„ÏŽÏÎ±.  Î Î»Î·ÏÏŽÏƒÏ„Îµ ÏƒÎµ Î´ÏŒÏƒÎµÎ¹Ï‚.",
-                pay: "Î Î»Î·ÏÏ‰Î¼Î® Î¼Î­ÏƒÏ‰ {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} Î‘Î³Î¿ÏÎ¬ Ï„ÏŽÏÎ±",
-                poweredBy: "ÎœÎµ Ï„Î·Î½ Ï…Ï€Î¿ÏƒÏ„Î®ÏÎ¹Î¾Î· Ï„Î¿Ï… {logo:paypal}"
+                checkout: "Ολοκλήρωση αγοράς μέσω {logo:pp} {logo:paypal}",
+                safer_tag: "Ο ασφαλέστερος και ευκολότερος τρόπος πληρωμής",
+                later_tag: "Αγοράστε τώρα.  Πληρώστε σε δόσεις.",
+                pay: "Πληρωμή μέσω {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} Αγορά τώρα",
+                poweredBy: "Με την υποστήριξη του {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -16143,34 +16173,34 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         GT: {
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
@@ -16185,19 +16215,19 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         GW: {
@@ -16211,27 +16241,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         GY: {
@@ -16245,27 +16275,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         HK: {
@@ -16278,19 +16308,19 @@
                 poweredBy: "Powered by {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal} çµå¸³",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´æ–¹ä¾¿çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "å…ˆè³¼è²·ï¼Œå¾Œä»˜æ¬¾ã€‚",
-                pay: "ä½¿ç”¨ {logo:paypal} ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è²·",
-                poweredBy: "æ”¯æ´æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal} 結帳",
+                safer_tag: "更安全、更方便的付款方式",
+                later_tag: "先購買，後付款。",
+                pay: "使用 {logo:paypal} 付款",
+                buynow: "{logo:pp} {logo:paypal} 立即買",
+                poweredBy: "支援方： {logo:paypal}"
             }
         },
         HN: {
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
@@ -16305,19 +16335,19 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         HR: {
@@ -16332,12 +16362,12 @@
         },
         HU: {
             hu: {
-                checkout: "{logo:pp} {logo:paypal}-fizetÃ©s",
-                safer_tag: "BiztonsÃ¡gosabb, kÃ¶nnyebb fizetÃ©si mÃ³d.",
-                later_tag: "VÃ¡sÃ¡roljon most. Fizessen kÃ©sÅ‘bb.",
-                pay: "{logo:paypal}-fizetÃ©s",
-                buynow: "{logo:pp} {logo:paypal} VÃ¡sÃ¡rlÃ¡s",
-                poweredBy: "ÃœzemeltetÅ‘: {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}-fizetés",
+                safer_tag: "Biztonságosabb, könnyebb fizetési mód.",
+                later_tag: "Vásároljon most. Fizessen később.",
+                pay: "{logo:paypal}-fizetés",
+                buynow: "{logo:pp} {logo:paypal} Vásárlás",
+                poweredBy: "Üzemeltető: {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -16349,27 +16379,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         ID: {
@@ -16401,37 +16431,37 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         IL: {
             he: {
-                checkout: "{logo:pp} {logo:paypal} ×©×œ×",
-                safer_tag: ".×”×“×¨×š ×”×§×œ×” ×•×”×‘×˜×•×—×” ×™×•×ª×¨ ×œ×©×œ×",
-                later_tag: "×§× ×” ×¢×›×©×™×•. ×©×œ× ×œ××•×¨×š ×–×ž×Ÿ.",
-                pay: "×©×œ× ×‘××ž×¦×¢×•×ª {logo:paypal}â€",
-                buynow: "{logo:pp} {logo:paypal} ×§× ×” ×¢×›×©×™×•",
-                poweredBy: "{logo:paypal} ×ž×•×¤×¢×œ ×¢×œ-×™×“×™"
+                checkout: "{logo:pp} {logo:paypal} שלם",
+                safer_tag: ".הדרך הקלה והבטוחה יותר לשלם",
+                later_tag: "קנה עכשיו. שלם לאורך זמן.",
+                pay: "שלם באמצעות {logo:paypal}‏",
+                buynow: "{logo:pp} {logo:paypal} קנה עכשיו",
+                poweredBy: "{logo:paypal} מופעל על-ידי"
             },
             en: {
                 checkout: "{logo:pp} {logo:paypal} Checkout",
@@ -16466,7 +16496,7 @@
             it: {
                 checkout: "{logo:pp} {logo:paypal} Paga adesso",
                 safer_tag: "Il modo rapido e sicuro per pagare",
-                later_tag: "Acquista ora. Paga piÃ¹ tardi.",
+                later_tag: "Acquista ora. Paga più tardi.",
                 pay: "Paga con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Paga adesso",
                 poweredBy: "Con tecnologia {logo:paypal}"
@@ -16491,37 +16521,37 @@
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         JO: {
             ar: {
-                checkout: "Ø§Ù„Ø³Ø¯Ø§Ø¯ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:pp} {logo:paypal}",
-                safer_tag: "Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„Ø£Ø³Ù‡Ù„ ÙˆØ§Ù„Ø£ÙƒØ«Ø± Ø£Ù…Ø§Ù†Ø§Ù‹ ÙÙŠ Ø§Ù„Ø¯ÙØ¹",
-                later_tag: "Ø§Ø´ØªØ±Ù Ø§Ù„Ø¢Ù†ØŒ ÙˆØ³Ø¯Ù‘Ø¯ Ø¹Ù„Ù‰ Ø¯ÙØ¹Ø§Øª",
-                pay: "Ø¯ÙØ¹ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} Ø´Ø±Ø§Ø¡ Ø§Ù„Ø¢Ù†",
-                poweredBy: "Ù…Ø¯Ø¹ÙˆÙ… Ù…Ù† {logo:paypal}"
+                checkout: "السداد بواسطة {logo:pp} {logo:paypal}",
+                safer_tag: "الطريقة الأسهل والأكثر أماناً في الدفع",
+                later_tag: "اشترِ الآن، وسدّد على دفعات",
+                pay: "دفع بواسطة {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} شراء الآن",
+                poweredBy: "مدعوم من {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -16533,36 +16563,36 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         JP: {
             ja: {
-                checkout: "{logo:pp} {logo:paypal}ã§æ”¯æ‰•ã†",
-                safer_tag: "ã‚ˆã‚Šå®‰å…¨ãƒ»ç°¡å˜ã«ãŠæ”¯æ‰•ã„",
-                later_tag: "ä»Šã™ãè³¼å…¥ã—ã¦ã€åˆ†å‰²ã—ã¦ãŠæ”¯æ‰•ã„ã€‚",
-                pay: "{logo:paypal}ã§æ”¯æ‰•ã†",
-                buynow: "{logo:pp} {logo:paypal} è³¼å…¥",
+                checkout: "{logo:pp} {logo:paypal}で支払う",
+                safer_tag: "より安全・簡単にお支払い",
+                later_tag: "今すぐ購入して、分割してお支払い。",
+                pay: "{logo:paypal}で支払う",
+                buynow: "{logo:pp} {logo:paypal} 購入",
                 poweredBy: "Powered by {logo:paypal}"
             },
             en: {
@@ -16585,27 +16615,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         KG: {
@@ -16619,27 +16649,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         KH: {
@@ -16663,37 +16693,37 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         KM: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -16705,19 +16735,19 @@
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         KN: {
@@ -16731,37 +16761,37 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         KR: {
             ko: {
-                checkout: "{logo:pp} {logo:paypal} ì²´í¬ ì•„ì›ƒ",
-                safer_tag: "ë” ì•ˆì „í•˜ê³  ë¹ ë¥¸ ê²°ì œ ë°©ë²•",
-                later_tag: "ì§€ê¸ˆ êµ¬ë§¤í•˜ê³  ì²œì²œížˆ ê²°ì œí•˜ì„¸ìš”.",
-                pay: "{logo:paypal}ë¡œ ì§€ë¶ˆí•˜ê¸°",
-                buynow: "{logo:pp} {logo:paypal} ë°”ë¡œ êµ¬ë§¤",
-                poweredBy: "ì œê³µ: {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal} 체크 아웃",
+                safer_tag: "더 안전하고 빠른 결제 방법",
+                later_tag: "지금 구매하고 천천히 결제하세요.",
+                pay: "{logo:paypal}로 지불하기",
+                buynow: "{logo:pp} {logo:paypal} 바로 구매",
+                poweredBy: "제공: {logo:paypal}"
             },
             en: {
                 checkout: "{logo:pp} {logo:paypal} Checkout",
@@ -16774,12 +16804,12 @@
         },
         KW: {
             ar: {
-                checkout: "Ø§Ù„Ø³Ø¯Ø§Ø¯ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:pp} {logo:paypal}",
-                safer_tag: "Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„Ø£Ø³Ù‡Ù„ ÙˆØ§Ù„Ø£ÙƒØ«Ø± Ø£Ù…Ø§Ù†Ø§Ù‹ ÙÙŠ Ø§Ù„Ø¯ÙØ¹",
-                later_tag: "Ø§Ø´ØªØ±Ù Ø§Ù„Ø¢Ù†ØŒ ÙˆØ³Ø¯Ù‘Ø¯ Ø¹Ù„Ù‰ Ø¯ÙØ¹Ø§Øª",
-                pay: "Ø¯ÙØ¹ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} Ø´Ø±Ø§Ø¡ Ø§Ù„Ø¢Ù†",
-                poweredBy: "Ù…Ø¯Ø¹ÙˆÙ… Ù…Ù† {logo:paypal}"
+                checkout: "السداد بواسطة {logo:pp} {logo:paypal}",
+                safer_tag: "الطريقة الأسهل والأكثر أماناً في الدفع",
+                later_tag: "اشترِ الآن، وسدّد على دفعات",
+                pay: "دفع بواسطة {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} شراء الآن",
+                poweredBy: "مدعوم من {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -16791,27 +16821,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         KY: {
@@ -16825,27 +16855,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         KZ: {
@@ -16859,27 +16889,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         LA: {
@@ -16903,27 +16933,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         LI: {
@@ -16937,27 +16967,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         LK: {
@@ -16981,27 +17011,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         LT: {
@@ -17014,36 +17044,36 @@
                 poweredBy: "Powered by {logo:paypal}"
             },
             ru: {
-                checkout: "ÐžÑ„Ð¾Ñ€Ð¼Ð¸Ñ‚ÑŒ Ð·Ð°ÐºÐ°Ð· Ñ‡ÐµÑ€ÐµÐ· {logo:pp} {logo:paypal}",
-                safer_tag: "Ð‘Ð¾Ð»ÐµÐµ Ð±ÐµÐ·Ð¾Ð¿Ð°ÑÐ½Ñ‹Ð¹ Ð¸ Ð¿Ñ€Ð¾ÑÑ‚Ð¾Ð¹ ÑÐ¿Ð¾ÑÐ¾Ð± Ð¾Ð¿Ð»Ð°Ñ‚Ñ‹.",
-                later_tag: "ÐŸÐ¾ÐºÑƒÐ¿Ð°Ð¹Ñ‚Ðµ ÑÐµÐ¹Ñ‡Ð°Ñ, Ð¿Ð»Ð°Ñ‚Ð¸Ñ‚Ðµ Ð¿Ð¾Ñ‚Ð¾Ð¼.",
-                pay: "ÐžÐ¿Ð»Ð°Ñ‚Ð¸Ñ‚ÑŒ Ñ‡ÐµÑ€ÐµÐ· {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} ÐšÑƒÐ¿Ð¸Ñ‚ÑŒ ÑÐµÐ¹Ñ‡Ð°Ñ",
-                poweredBy: "ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ð½Ð¾ {logo:paypal}"
+                checkout: "Оформить заказ через {logo:pp} {logo:paypal}",
+                safer_tag: "Более безопасный и простой способ оплаты.",
+                later_tag: "Покупайте сейчас, платите потом.",
+                pay: "Оплатить через {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} Купить сейчас",
+                poweredBy: "Обработано {logo:paypal}"
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         LU: {
@@ -17065,27 +17095,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         LV: {
@@ -17098,46 +17128,46 @@
                 poweredBy: "Powered by {logo:paypal}"
             },
             ru: {
-                checkout: "ÐžÑ„Ð¾Ñ€Ð¼Ð¸Ñ‚ÑŒ Ð·Ð°ÐºÐ°Ð· Ñ‡ÐµÑ€ÐµÐ· {logo:pp} {logo:paypal}",
-                safer_tag: "Ð‘Ð¾Ð»ÐµÐµ Ð±ÐµÐ·Ð¾Ð¿Ð°ÑÐ½Ñ‹Ð¹ Ð¸ Ð¿Ñ€Ð¾ÑÑ‚Ð¾Ð¹ ÑÐ¿Ð¾ÑÐ¾Ð± Ð¾Ð¿Ð»Ð°Ñ‚Ñ‹.",
-                later_tag: "ÐŸÐ¾ÐºÑƒÐ¿Ð°Ð¹Ñ‚Ðµ ÑÐµÐ¹Ñ‡Ð°Ñ, Ð¿Ð»Ð°Ñ‚Ð¸Ñ‚Ðµ Ð¿Ð¾Ñ‚Ð¾Ð¼.",
-                pay: "ÐžÐ¿Ð»Ð°Ñ‚Ð¸Ñ‚ÑŒ Ñ‡ÐµÑ€ÐµÐ· {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} ÐšÑƒÐ¿Ð¸Ñ‚ÑŒ ÑÐµÐ¹Ñ‡Ð°Ñ",
-                poweredBy: "ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ð½Ð¾ {logo:paypal}"
+                checkout: "Оформить заказ через {logo:pp} {logo:paypal}",
+                safer_tag: "Более безопасный и простой способ оплаты.",
+                later_tag: "Покупайте сейчас, платите потом.",
+                pay: "Оплатить через {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} Купить сейчас",
+                poweredBy: "Обработано {logo:paypal}"
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         MA: {
             ar: {
-                checkout: "Ø§Ù„Ø³Ø¯Ø§Ø¯ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:pp} {logo:paypal}",
-                safer_tag: "Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„Ø£Ø³Ù‡Ù„ ÙˆØ§Ù„Ø£ÙƒØ«Ø± Ø£Ù…Ø§Ù†Ø§Ù‹ ÙÙŠ Ø§Ù„Ø¯ÙØ¹",
-                later_tag: "Ø§Ø´ØªØ±Ù Ø§Ù„Ø¢Ù†ØŒ ÙˆØ³Ø¯Ù‘Ø¯ Ø¹Ù„Ù‰ Ø¯ÙØ¹Ø§Øª",
-                pay: "Ø¯ÙØ¹ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} Ø´Ø±Ø§Ø¡ Ø§Ù„Ø¢Ù†",
-                poweredBy: "Ù…Ø¯Ø¹ÙˆÙ… Ù…Ù† {logo:paypal}"
+                checkout: "السداد بواسطة {logo:pp} {logo:paypal}",
+                safer_tag: "الطريقة الأسهل والأكثر أماناً في الدفع",
+                later_tag: "اشترِ الآن، وسدّد على دفعات",
+                pay: "دفع بواسطة {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} شراء الآن",
+                poweredBy: "مدعوم من {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -17149,37 +17179,37 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         MC: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -17221,27 +17251,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         MH: {
@@ -17255,27 +17285,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         MK: {
@@ -17291,11 +17321,11 @@
         ML: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -17307,19 +17337,19 @@
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         MN: {
@@ -17343,27 +17373,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         MR: {
@@ -17377,27 +17407,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         MS: {
@@ -17411,27 +17441,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         MT: {
@@ -17455,27 +17485,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         MV: {
@@ -17499,34 +17529,34 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         MX: {
             es: {
                 checkout: "Pagar con {logo:pp} {logo:paypal}",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 installment: "{logo:pp} {logo:paypal}  Pagos en<br>  mensualidades",
@@ -17565,27 +17595,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         NA: {
@@ -17599,27 +17629,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         NC: {
@@ -17633,37 +17663,37 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         NE: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -17675,19 +17705,19 @@
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         NF: {
@@ -17701,27 +17731,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         NG: {
@@ -17737,8 +17767,8 @@
         NI: {
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
@@ -17753,19 +17783,19 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         NL: {
@@ -17790,9 +17820,9 @@
             no: {
                 checkout: "{logo:pp} {logo:paypal} Betal",
                 safer_tag: "En trygg og enkel betalingsmetode",
-                later_tag: "KjÃ¸p nÃ¥, betal senere.",
+                later_tag: "Kjøp nå, betal senere.",
                 pay: "Betal med {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} KjÃ¸p nÃ¥",
+                buynow: "{logo:pp} {logo:paypal} Kjøp nå",
                 poweredBy: "Leveres av {logo:paypal}"
             },
             en: {
@@ -17825,27 +17855,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         NU: {
@@ -17859,27 +17889,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         NZ: {
@@ -17893,37 +17923,37 @@
             },
             fr: {
                 checkout: "{logo:pp} {logo:paypal} Payer",
-                safer_tag: "Un rÃ©flexe sÃ©curitÃ©.",
+                safer_tag: "Un réflexe sécurité.",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar.",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar.",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼ã€‚",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式。",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         OM: {
             ar: {
-                checkout: "Ø§Ù„Ø³Ø¯Ø§Ø¯ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:pp} {logo:paypal}",
-                safer_tag: "Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„Ø£Ø³Ù‡Ù„ ÙˆØ§Ù„Ø£ÙƒØ«Ø± Ø£Ù…Ø§Ù†Ø§Ù‹ ÙÙŠ Ø§Ù„Ø¯ÙØ¹",
-                later_tag: "Ø§Ø´ØªØ±Ù Ø§Ù„Ø¢Ù†ØŒ ÙˆØ³Ø¯Ù‘Ø¯ Ø¹Ù„Ù‰ Ø¯ÙØ¹Ø§Øª",
-                pay: "Ø¯ÙØ¹ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} Ø´Ø±Ø§Ø¡ Ø§Ù„Ø¢Ù†",
-                poweredBy: "Ù…Ø¯Ø¹ÙˆÙ… Ù…Ù† {logo:paypal}"
+                checkout: "السداد بواسطة {logo:pp} {logo:paypal}",
+                safer_tag: "الطريقة الأسهل والأكثر أماناً في الدفع",
+                later_tag: "اشترِ الآن، وسدّد على دفعات",
+                pay: "دفع بواسطة {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} شراء الآن",
+                poweredBy: "مدعوم من {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -17935,34 +17965,34 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         PA: {
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
@@ -17977,26 +18007,26 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         PE: {
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
@@ -18011,19 +18041,19 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         PF: {
@@ -18037,27 +18067,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         PG: {
@@ -18071,27 +18101,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         PH: {
@@ -18107,9 +18137,9 @@
         PL: {
             pl: {
                 checkout: "{logo:pp} {logo:paypal} Do kasy",
-                safer_tag: "PÅ‚aÄ‡ wygodnie i bezpiecznie",
-                later_tag: "Kup teraz. PÅ‚aÄ‡ w ratach",
-                pay: "ZapÅ‚aÄ‡ z {logo:paypal}",
+                safer_tag: "Płać wygodnie i bezpiecznie",
+                later_tag: "Kup teraz. Płać w ratach",
+                pay: "Zapłać z {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Kup teraz",
                 poweredBy: "Powered by {logo:paypal}"
             },
@@ -18133,27 +18163,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         PN: {
@@ -18167,34 +18197,34 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         PT: {
             pt: {
                 checkout: "{logo:pp} {logo:paypal} Checkout",
-                safer_tag: "A forma rÃ¡pida e segura de pagar",
-                later_tag: "Compre agora. VÃ¡ pagando.",
+                safer_tag: "A forma rápida e segura de pagar",
+                later_tag: "Compre agora. Vá pagando.",
                 pay: "Pagar com {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar agora",
                 poweredBy: "Powered by {logo:paypal}"
@@ -18219,34 +18249,34 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         PY: {
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
@@ -18271,35 +18301,35 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             },
             ar: {
-                checkout: "Ø§Ù„Ø³Ø¯Ø§Ø¯ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:pp} {logo:paypal}",
-                safer_tag: "Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„Ø£Ø³Ù‡Ù„ ÙˆØ§Ù„Ø£ÙƒØ«Ø± Ø£Ù…Ø§Ù†Ø§Ù‹ ÙÙŠ Ø§Ù„Ø¯ÙØ¹",
-                later_tag: "Ø§Ø´ØªØ±Ù Ø§Ù„Ø¢Ù†ØŒ ÙˆØ³Ø¯Ù‘Ø¯ Ø¹Ù„Ù‰ Ø¯ÙØ¹Ø§Øª",
-                pay: "Ø¯ÙØ¹ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} Ø´Ø±Ø§Ø¡ Ø§Ù„Ø¢Ù†",
-                poweredBy: "Ù…Ø¯Ø¹ÙˆÙ… Ù…Ù† {logo:paypal}"
+                checkout: "السداد بواسطة {logo:pp} {logo:paypal}",
+                safer_tag: "الطريقة الأسهل والأكثر أماناً في الدفع",
+                later_tag: "اشترِ الآن، وسدّد على دفعات",
+                pay: "دفع بواسطة {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} شراء الآن",
+                poweredBy: "مدعوم من {logo:paypal}"
             }
         },
         RE: {
@@ -18313,27 +18343,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         RO: {
@@ -18347,27 +18377,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         RS: {
@@ -18381,37 +18411,37 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         RU: {
             ru: {
-                checkout: "{logo:pp} {logo:paypal} ÐžÑ„Ð¾Ñ€Ð¼Ð¸Ñ‚ÑŒ Ð¿Ð¾ÐºÑƒÐ¿ÐºÑƒ",
-                safer_tag: "Ð‘Ð¾Ð»ÐµÐµ Ð±ÐµÐ·Ð¾Ð¿Ð°ÑÐ½Ñ‹Ð¹ Ð¸ Ð¿Ñ€Ð¾ÑÑ‚Ð¾Ð¹ ÑÐ¿Ð¾ÑÐ¾Ð± Ð¾Ð¿Ð»Ð°Ñ‚Ñ‹.",
-                later_tag: "ÐŸÐ¾ÐºÑƒÐ¿Ð°Ð¹Ñ‚Ðµ ÑÐµÐ¹Ñ‡Ð°Ñ, Ð¿Ð»Ð°Ñ‚Ð¸Ñ‚Ðµ Ð¿Ð¾Ñ‚Ð¾Ð¼.",
-                pay: "ÐžÐ¿Ð»Ð°Ñ‚Ð¸Ñ‚ÑŒ Ñ‡ÐµÑ€ÐµÐ· {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} ÐšÑƒÐ¿Ð¸Ñ‚ÑŒ ÑÐµÐ¹Ñ‡Ð°Ñ",
-                poweredBy: "ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ð½Ð¾ {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal} Оформить покупку",
+                safer_tag: "Более безопасный и простой способ оплаты.",
+                later_tag: "Покупайте сейчас, платите потом.",
+                pay: "Оплатить через {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} Купить сейчас",
+                poweredBy: "Обработано {logo:paypal}"
             },
             en: {
                 checkout: "{logo:pp} {logo:paypal} Checkout",
@@ -18425,11 +18455,11 @@
         RW: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -18441,29 +18471,29 @@
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         SA: {
             ar: {
-                checkout: "Ø§Ù„Ø³Ø¯Ø§Ø¯ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:pp} {logo:paypal}",
-                safer_tag: "Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„Ø£Ø³Ù‡Ù„ ÙˆØ§Ù„Ø£ÙƒØ«Ø± Ø£Ù…Ø§Ù†Ø§Ù‹ ÙÙŠ Ø§Ù„Ø¯ÙØ¹",
-                later_tag: "Ø§Ø´ØªØ±Ù Ø§Ù„Ø¢Ù†ØŒ ÙˆØ³Ø¯Ù‘Ø¯ Ø¹Ù„Ù‰ Ø¯ÙØ¹Ø§Øª",
-                pay: "Ø¯ÙØ¹ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} Ø´Ø±Ø§Ø¡ Ø§Ù„Ø¢Ù†",
-                poweredBy: "Ù…Ø¯Ø¹ÙˆÙ… Ù…Ù† {logo:paypal}"
+                checkout: "السداد بواسطة {logo:pp} {logo:paypal}",
+                safer_tag: "الطريقة الأسهل والأكثر أماناً في الدفع",
+                later_tag: "اشترِ الآن، وسدّد على دفعات",
+                pay: "دفع بواسطة {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} شراء الآن",
+                poweredBy: "مدعوم من {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -18475,27 +18505,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         SB: {
@@ -18509,37 +18539,37 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         SC: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -18551,29 +18581,29 @@
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         SE: {
             sv: {
                 checkout: "{logo:pp} {logo:paypal} Betala",
-                safer_tag: "Ett tryggt och smidigt sÃ¤tt att betala",
-                later_tag: "KÃ¶p nu, betala senare",
+                safer_tag: "Ett tryggt och smidigt sätt att betala",
+                later_tag: "Köp nu, betala senare",
                 pay: "Betala med {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} KÃ¶p nu",
-                poweredBy: "TillhandahÃ¥lls av {logo:paypal}"
+                buynow: "{logo:pp} {logo:paypal} Köp nu",
+                poweredBy: "Tillhandahålls av {logo:paypal}"
             },
             en: {
                 checkout: "{logo:pp} {logo:paypal} Checkout",
@@ -18605,27 +18635,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         SI: {
@@ -18639,27 +18669,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         SJ: {
@@ -18673,37 +18703,37 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         SK: {
             sk: {
-                checkout: "ZaplatiÅ¥ cez {logo:pp} {logo:paypal}",
-                safer_tag: "JednoduchÅ¡Ã­ aÂ bezpeÄnejÅ¡Ã­ spÃ´sob platby",
-                later_tag: "NakÃºpte teraz, zaplaÅ¥te postupne",
-                pay: "ZaplatiÅ¥ cez {logo: paypal}",
-                buynow: "{logo:pp} {logo:paypal} KÃºpiÅ¥",
-                poweredBy: "PouÅ¾Ã­va technolÃ³giu {logo:paypal}"
+                checkout: "Zaplatiť cez {logo:pp} {logo:paypal}",
+                safer_tag: "Jednoduchší a bezpečnejší spôsob platby",
+                later_tag: "Nakúpte teraz, zaplaťte postupne",
+                pay: "Zaplatiť cez {logo: paypal}",
+                buynow: "{logo:pp} {logo:paypal} Kúpiť",
+                poweredBy: "Používa technológiu {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -18715,27 +18745,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         SL: {
@@ -18749,27 +18779,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         SM: {
@@ -18783,37 +18813,37 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         SN: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -18825,19 +18855,19 @@
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         SO: {
@@ -18851,27 +18881,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         SR: {
@@ -18885,27 +18915,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         ST: {
@@ -18919,34 +18949,34 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         SV: {
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
@@ -18961,19 +18991,19 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         SZ: {
@@ -18987,27 +19017,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         TC: {
@@ -19021,37 +19051,37 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         TD: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -19063,29 +19093,29 @@
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         TG: {
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -19097,29 +19127,29 @@
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         TH: {
             th: {
-                checkout: "{logo:pp} {logo:paypal} à¸Šà¸³à¸£à¸°à¹€à¸‡à¸´à¸™",
-                safer_tag: "à¸§à¸´à¸˜à¸µà¸Šà¸³à¸£à¸°à¹€à¸‡à¸´à¸™à¸—à¸µà¹ˆà¸›à¸¥à¸­à¸”à¸ à¸±à¸¢à¹à¸¥à¸°à¸‡à¹ˆà¸²à¸¢à¸à¸§à¹ˆà¸²",
-                later_tag: "à¸‹à¸·à¹‰à¸­à¸§à¸±à¸™à¸™à¸µà¹‰ à¹à¸¥à¹‰à¸§à¸„à¹ˆà¸­à¸¢à¹† à¸ˆà¹ˆà¸²à¸¢à¸—à¸µà¸«à¸¥à¸±à¸‡",
-                pay: "à¸Šà¸³à¸£à¸°à¹€à¸‡à¸´à¸™à¸”à¹‰à¸§à¸¢ {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} à¸‹à¸·à¹‰à¸­à¸—à¸±à¸™à¸—à¸µ",
-                poweredBy: "à¹ƒà¸«à¹‰à¸šà¸£à¸´à¸à¸²à¸£à¹‚à¸”à¸¢ {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal} ชำระเงิน",
+                safer_tag: "วิธีชำระเงินที่ปลอดภัยและง่ายกว่า",
+                later_tag: "ซื้อวันนี้ แล้วค่อยๆ จ่ายทีหลัง",
+                pay: "ชำระเงินด้วย {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} ซื้อทันที",
+                poweredBy: "ให้บริการโดย {logo:paypal}"
             },
             en: {
                 checkout: "{logo:pp} {logo:paypal} Checkout",
@@ -19141,27 +19171,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         TM: {
@@ -19175,37 +19205,37 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         TN: {
             ar: {
-                checkout: "Ø§Ù„Ø³Ø¯Ø§Ø¯ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:pp} {logo:paypal}",
-                safer_tag: "Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„Ø£Ø³Ù‡Ù„ ÙˆØ§Ù„Ø£ÙƒØ«Ø± Ø£Ù…Ø§Ù†Ø§Ù‹ ÙÙŠ Ø§Ù„Ø¯ÙØ¹",
-                later_tag: "Ø§Ø´ØªØ±Ù Ø§Ù„Ø¢Ù†ØŒ ÙˆØ³Ø¯Ù‘Ø¯ Ø¹Ù„Ù‰ Ø¯ÙØ¹Ø§Øª",
-                pay: "Ø¯ÙØ¹ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} Ø´Ø±Ø§Ø¡ Ø§Ù„Ø¢Ù†",
-                poweredBy: "Ù…Ø¯Ø¹ÙˆÙ… Ù…Ù† {logo:paypal}"
+                checkout: "السداد بواسطة {logo:pp} {logo:paypal}",
+                safer_tag: "الطريقة الأسهل والأكثر أماناً في الدفع",
+                later_tag: "اشترِ الآن، وسدّد على دفعات",
+                pay: "دفع بواسطة {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} شراء الآن",
+                poweredBy: "مدعوم من {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -19217,27 +19247,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         TO: {
@@ -19252,12 +19282,12 @@
         },
         TR: {
             tr: {
-                checkout: "{logo:pp} {logo:paypal} ile SatÄ±n AlÄ±n",
-                safer_tag: "Ã–deme yapmanÄ±n daha gÃ¼venli ve kolay yolu",
-                later_tag: "Åžimdi AlÄ±n. Daha Sonra Ã–deyin.",
-                pay: "{logo:paypal} ile Ã–de",
-                buynow: "{logo:pp} {logo:paypal} Hemen SatÄ±n AlÄ±n",
-                poweredBy: "Ã‡alÄ±ÅŸtÄ±ran {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal} ile Satın Alın",
+                safer_tag: "Ödeme yapmanın daha güvenli ve kolay yolu",
+                later_tag: "Şimdi Alın. Daha Sonra Ödeyin.",
+                pay: "{logo:paypal} ile Öde",
+                buynow: "{logo:pp} {logo:paypal} Hemen Satın Alın",
+                poweredBy: "Çalıştıran {logo:paypal}"
             },
             en: {
                 checkout: "{logo:pp} {logo:paypal} Checkout",
@@ -19279,27 +19309,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         TV: {
@@ -19313,37 +19343,37 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         TW: {
             zh: {
-                checkout: "{logo:pp} {logo:paypal} çµå¸³",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´æ–¹ä¾¿çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "å…ˆè³¼è²·ï¼Œå¾Œä»˜æ¬¾ã€‚",
-                pay: "ä½¿ç”¨ {logo:paypal} ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è³¼",
-                poweredBy: "æœå‹™æä¾›è€…ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal} 結帳",
+                safer_tag: "更安全、更方便的付款方式",
+                later_tag: "先購買，後付款。",
+                pay: "使用 {logo:paypal} 付款",
+                buynow: "{logo:pp} {logo:paypal} 立即購",
+                poweredBy: "服務提供者： {logo:paypal}"
             },
             en: {
                 checkout: "{logo:pp} {logo:paypal} Checkout",
@@ -19365,27 +19395,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         UA: {
@@ -19398,36 +19428,36 @@
                 poweredBy: "Powered by {logo:paypal}"
             },
             ru: {
-                checkout: "ÐžÑ„Ð¾Ñ€Ð¼Ð¸Ñ‚ÑŒ Ð·Ð°ÐºÐ°Ð· Ñ‡ÐµÑ€ÐµÐ· {logo:pp} {logo:paypal}",
-                safer_tag: "Ð‘Ð¾Ð»ÐµÐµ Ð±ÐµÐ·Ð¾Ð¿Ð°ÑÐ½Ñ‹Ð¹ Ð¸ Ð¿Ñ€Ð¾ÑÑ‚Ð¾Ð¹ ÑÐ¿Ð¾ÑÐ¾Ð± Ð¾Ð¿Ð»Ð°Ñ‚Ñ‹.",
-                later_tag: "ÐŸÐ¾ÐºÑƒÐ¿Ð°Ð¹Ñ‚Ðµ ÑÐµÐ¹Ñ‡Ð°Ñ, Ð¿Ð»Ð°Ñ‚Ð¸Ñ‚Ðµ Ð¿Ð¾Ñ‚Ð¾Ð¼.",
-                pay: "ÐžÐ¿Ð»Ð°Ñ‚Ð¸Ñ‚ÑŒ Ñ‡ÐµÑ€ÐµÐ· {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} ÐšÑƒÐ¿Ð¸Ñ‚ÑŒ ÑÐµÐ¹Ñ‡Ð°Ñ",
-                poweredBy: "ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ð½Ð¾ {logo:paypal}"
+                checkout: "Оформить заказ через {logo:pp} {logo:paypal}",
+                safer_tag: "Более безопасный и простой способ оплаты.",
+                later_tag: "Покупайте сейчас, платите потом.",
+                pay: "Оплатить через {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} Купить сейчас",
+                poweredBy: "Обработано {logo:paypal}"
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         UG: {
@@ -19441,27 +19471,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         US: {
@@ -19476,34 +19506,34 @@
             },
             fr: {
                 checkout: "{logo:pp} {logo:paypal} Payer",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "Pagar con {logo:pp} {logo:paypal}",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "ä½¿ç”¨{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "使用{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         UY: {
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
@@ -19518,19 +19548,19 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         VA: {
@@ -19544,27 +19574,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         VC: {
@@ -19578,34 +19608,34 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         VE: {
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
@@ -19620,19 +19650,19 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         VG: {
@@ -19646,27 +19676,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         VN: {
@@ -19690,27 +19720,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         WF: {
@@ -19724,27 +19754,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         WS: {
@@ -19759,12 +19789,12 @@
         },
         YE: {
             ar: {
-                checkout: "Ø§Ù„Ø³Ø¯Ø§Ø¯ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:pp} {logo:paypal}",
-                safer_tag: "Ø§Ù„Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„Ø£Ø³Ù‡Ù„ ÙˆØ§Ù„Ø£ÙƒØ«Ø± Ø£Ù…Ø§Ù†Ø§Ù‹ ÙÙŠ Ø§Ù„Ø¯ÙØ¹",
-                later_tag: "Ø§Ø´ØªØ±Ù Ø§Ù„Ø¢Ù†ØŒ ÙˆØ³Ø¯Ù‘Ø¯ Ø¹Ù„Ù‰ Ø¯ÙØ¹Ø§Øª",
-                pay: "Ø¯ÙØ¹ Ø¨ÙˆØ§Ø³Ø·Ø© {logo:paypal}",
-                buynow: "{logo:pp} {logo:paypal} Ø´Ø±Ø§Ø¡ Ø§Ù„Ø¢Ù†",
-                poweredBy: "Ù…Ø¯Ø¹ÙˆÙ… Ù…Ù† {logo:paypal}"
+                checkout: "السداد بواسطة {logo:pp} {logo:paypal}",
+                safer_tag: "الطريقة الأسهل والأكثر أماناً في الدفع",
+                later_tag: "اشترِ الآن، وسدّد على دفعات",
+                pay: "دفع بواسطة {logo:paypal}",
+                buynow: "{logo:pp} {logo:paypal} شراء الآن",
+                poweredBy: "مدعوم من {logo:paypal}"
             },
             en: {
                 checkout: "Check out with {logo:pp} {logo:paypal}",
@@ -19776,27 +19806,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         YT: {
@@ -19810,27 +19840,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         ZA: {
@@ -19844,27 +19874,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         ZM: {
@@ -19878,27 +19908,27 @@
             },
             fr: {
                 checkout: "Payer avec {logo:pp} {logo:paypal}",
-                safer_tag: "Votre rÃ©flexe sÃ©curitÃ© pour payer en ligne",
+                safer_tag: "Votre réflexe sécurité pour payer en ligne",
                 later_tag: "Achetez maintenant et payez plus tard.",
                 pay: "Payer avec {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Acheter",
-                poweredBy: "OptimisÃ© par {logo:paypal}"
+                poweredBy: "Optimisé par {logo:paypal}"
             },
             es: {
                 checkout: "{logo:pp} {logo:paypal} Pagar",
-                safer_tag: "La forma rÃ¡pida y segura de pagar",
-                later_tag: "Compre ahora y pague mÃ¡s adelante.",
+                safer_tag: "La forma rápida y segura de pagar",
+                later_tag: "Compre ahora y pague más adelante.",
                 pay: "Pagar con {logo:paypal}",
                 buynow: "{logo:pp} {logo:paypal} Comprar ahora",
                 poweredBy: "Desarrollado por {logo:paypal}"
             },
             zh: {
-                checkout: "{logo:pp} {logo:paypal}ç»“è´¦",
-                safer_tag: "æ›´å®‰å…¨ã€æ›´ä¾¿æ·çš„ä»˜æ¬¾æ–¹å¼",
-                later_tag: "ç«‹å³è´­ä¹°ï¼Œåˆ†æœŸä»˜æ¬¾ã€‚",
-                pay: "ç”¨{logo:paypal}ä»˜æ¬¾",
-                buynow: "{logo:pp} {logo:paypal} ç«‹å³è´­ä¹°",
-                poweredBy: "æŠ€æœ¯æ”¯æŒæä¾›æ–¹ï¼š {logo:paypal}"
+                checkout: "{logo:pp} {logo:paypal}结账",
+                safer_tag: "更安全、更便捷的付款方式",
+                later_tag: "立即购买，分期付款。",
+                pay: "用{logo:paypal}付款",
+                buynow: "{logo:pp} {logo:paypal} 立即购买",
+                poweredBy: "技术支持提供方： {logo:paypal}"
             }
         },
         ZW: {
@@ -20255,7 +20285,7 @@
                 logoColor: "blue"
             })));
         }(normalizeProps(props)) : null;
-        return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.277", 
+        return Object(jsx.b)("div", Object(esm_extends.a)({}, (_ref18 = {}, _ref18[constants.c.VERSION] = "4.0.280", 
         _ref18), {
             class: class_CLASS.CONTAINER + " " + getCommonButtonClasses({
                 layout: layout,
@@ -20806,10 +20836,41 @@
                         _creditThrottle$log[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.BUTTON_CLICK, 
                         _creditThrottle$log[constants.u.KEY.BUTTON_SESSION_UID] = this.props.buttonSessionID, 
                         _creditThrottle$log));
-                        var _ref5$color = (this.props.style || {}).color, color = void 0 === _ref5$color ? "default" : _ref5$color;
+                        var _ref5 = this.props.style || {}, _ref5$color = _ref5.color, color = void 0 === _ref5$color ? "default" : _ref5$color;
                         return Object(beaver_logger_client.k)("button_click_color_" + color), Object(beaver_logger_client.h)(), 
                         original.apply(this, arguments);
                     };
+                }
+            },
+            onResize: {
+                type: "function",
+                required: !1,
+                get value() {
+                    var initialHeight, logInlineGuestOutOfViewPortOnlyOnce = Object(src_lib.H)(function(data) {
+                        Object(beaver_logger_client.k)("buttons_expansion_outside_viewport", data), Object(beaver_logger_client.j)();
+                    });
+                    return function() {
+                        var container = this.container;
+                        initialHeight || (initialHeight = container.offsetHeight);
+                        var isContainerExpanded = container && container.offsetHeight > initialHeight, isExpansionInViewport = function() {
+                            try {
+                                var scrollOffsetY = window.pageYOffset ? window.pageYOffset : document.documentElement ? document.documentElement.scrollTop : 0, windowHeight = window.innerHeight, containerOffsetY = container.getBoundingClientRect().top;
+                                return scrollOffsetY + windowHeight > initialHeight + containerOffsetY + 200;
+                            } catch (err) {
+                                return Object(beaver_logger_client.k)("cannot_get_the_viewport_information"), !1;
+                            }
+                        }();
+                        isContainerExpanded && !isExpansionInViewport && logInlineGuestOutOfViewPortOnlyOnce({
+                            height: container.offsetHeight,
+                            window: {
+                                width: window.innerWidth,
+                                height: window.innerHeight
+                            }
+                        });
+                    };
+                },
+                decorate: function(original) {
+                    return Object(src_lib.i)(original);
                 }
             },
             locale: {
@@ -20923,8 +20984,8 @@
                             data;
                         }(payload.queryItems), actions = function(query) {
                             var actions = {
-                                close: src_lib.E,
-                                closeComponent: src_lib.E
+                                close: src_lib.F,
+                                closeComponent: src_lib.F
                             }, opType = query.opType, return_uri = query.return_uri, cancel_uri = query.cancel_uri;
                             return opType === OPTYPE.PAYMENT ? actions.redirect = function(win, redirectUrl) {
                                 return void 0 === win && (win = window), void 0 === redirectUrl && (redirectUrl = return_uri), 
@@ -21333,7 +21394,7 @@
         }), Object(beaver_logger_client.p)(((setup_track3 = {})[constants.u.KEY.STATE] = constants.u.STATE.LOAD, 
         setup_track3[constants.u.KEY.TRANSITION] = constants.u.TRANSITION.SCRIPT_LOAD, setup_track3));
     }
-    var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.277", legacy = __webpack_require__(66);
+    var interface_checkout, apps, interface_Checkout, interface_BillingPage, PayPalCheckout, destroyAll, enableCheckoutIframe, logger, interface_ThreeDomainSecure, postRobot = post_robot_src, onPossiblyUnhandledException = zalgo_promise_src.a.onPossiblyUnhandledException, interface_version = "4.0.280", legacy = __webpack_require__(66);
     interface_checkout = legacy.checkout, apps = legacy.apps, Object(lib.G)() && (interface_Checkout = src_checkout.a, 
     interface_BillingPage = BillingPage, interface_ThreeDomainSecure = ThreeDomainSecure, 
     PayPalCheckout = src_checkout.a, enableCheckoutIframe = function() {
