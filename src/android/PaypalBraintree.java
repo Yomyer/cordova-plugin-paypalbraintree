@@ -119,6 +119,7 @@ public class PaypalBraintree extends CordovaPlugin implements PaymentMethodNonce
             String description = _options.getString("description");
             String currency = _options.getString("currency");
             String name = _options.getString("name");
+            String locale = _options.getString("locale");
             JSONArray items = _options.getJSONArray("items");
 
 
@@ -147,9 +148,8 @@ public class PaypalBraintree extends CordovaPlugin implements PaymentMethodNonce
 
             PayPalRequest request = new PayPalRequest(amount)
                     .currencyCode(currency)
+                    .localeCode(locale)
                     .intent(PayPalRequest.INTENT_AUTHORIZE);
-
-            System.out.println(request);
 
             if(name == null || name.equals("")){
                 request.displayName(name);

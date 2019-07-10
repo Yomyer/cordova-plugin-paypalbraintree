@@ -63,6 +63,7 @@
     NSString* description = (NSString *)[self.options objectForKey:@"description"];
     NSString* currency = (NSString *)[self.options objectForKey:@"currency"];
     NSString* name = (NSString *)[self.options objectForKey:@"name"];
+    NSString* locale = (NSString *)[self.options objectForKey:@"locale"];
     NSArray* items = (NSArray *)[self.options objectForKey:@"items"];
 
     if (!token || token == nil || token == (id)[NSNull null]) {
@@ -98,6 +99,8 @@
     BTPayPalRequest *request= [[BTPayPalRequest alloc] initWithAmount:amount];
     [request setBillingAgreementDescription:description];
     [request setCurrencyCode:currency];
+    [request setLocaleCode:locale];
+  
     if(name){
         [request setDisplayName:name];
     }

@@ -63,6 +63,7 @@ PaypalBraintree.initialize(token, {
         // If you want to hide the default Paypal button and use a custom button element
         customButton: true, 
         env: 'sandbox',
+        locale: 'es_ES',
         items: [
             {
                 quantity: '1',
@@ -80,6 +81,9 @@ PaypalBraintree.initialize(token, {
           } else {
             // Cacelled user callback
           }
+        },
+        onRender: () => {
+          // What you want me to do when paypal is ready
         }
     },
     function () { console.log("init OK!"); },
