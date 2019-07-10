@@ -79,7 +79,10 @@ var PaypalBraintree = {
             outlet.style.display = 'block';
             outlet.style.margin = 'auto';
             
+            window.PaypalBraintree.onRender();
           });
+        }else{
+          window.PaypalBraintree.onRender();
         }
       }
     }, options.element);
@@ -89,7 +92,7 @@ var PaypalBraintree = {
   checkout: function (success, error) {
 
 
-  },
+  }
 }
 
 

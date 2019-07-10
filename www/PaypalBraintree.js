@@ -26,6 +26,7 @@ var locales = {
 var PaypalBraintree = {
     error: null,
     authorize: null,
+    render: null,
     onAuthorize: function (response) {
         if(this.authorize){
             this.authorize(response);
@@ -38,12 +39,21 @@ var PaypalBraintree = {
         }
     },
 
+    onRender: function (response) {
+        if(this.render){
+            this.render(response);
+        }
+    },
+
     initialize: function (token, options, success, error) {
         if(options.onError){
             this.error = options.onError;
         }
         if(options.onAuthorize){
             this.authorize = options.onAuthorize;
+        }
+        if(options.onRender){
+            this.render = options.onRender;
         }
 
         options = {

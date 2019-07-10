@@ -48,8 +48,6 @@ public class PaypalBraintree extends CordovaPlugin implements PaymentMethodNonce
             return false;
         }
 
-        Log.w(TAG, "execute ==> " + action + " === " + args);
-
         _callbackContext = callbackContext;
 
         try {
@@ -79,7 +77,6 @@ public class PaypalBraintree extends CordovaPlugin implements PaymentMethodNonce
     public void onError(Exception error) {
         String e = "Caught error from BraintreeSDK:: " + error.getMessage();
 
-        Log.e(TAG, e);
         _callbackContext.error(e);
         this.evalJs("onError", this.error(e));
     }
@@ -100,7 +97,6 @@ public class PaypalBraintree extends CordovaPlugin implements PaymentMethodNonce
 
     @Override
     public void onPaymentMethodNonceCreated(PaymentMethodNonce paymentMethodNonce) {
-        Log.e(TAG, "onPaymentMethodNonceCreated");
         if (paymentMethodNonce instanceof PayPalAccountNonce) {
             PayPalAccountNonce payPalAccountNonce = (PayPalAccountNonce)paymentMethodNonce;
             JSONObject result = new JSONObject(this.getPaymentUINonceResult(payPalAccountNonce));
@@ -113,6 +109,7 @@ public class PaypalBraintree extends CordovaPlugin implements PaymentMethodNonce
 
     private synchronized void initialize(final JSONArray args) throws JSONException {
         _options = args.getJSONObject(0);
+        this.evalJs("onRender", new JSONObject());
     }
     private PluginResult checkout() {
 

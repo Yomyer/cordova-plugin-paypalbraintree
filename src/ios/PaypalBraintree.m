@@ -48,6 +48,8 @@
 - (void)initialize:(CDVInvokedUrlCommand*)command {
     self.options = [[NSDictionary alloc]init];
     self.options = [command.arguments objectAtIndex:0];
+
+    [self evalJs:@"onRender" object:@{}];
 }
 
 - (void)refresh:(CDVInvokedUrlCommand*)command {
