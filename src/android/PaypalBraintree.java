@@ -110,9 +110,10 @@ public class PaypalBraintree extends CordovaPlugin implements PaymentMethodNonce
     private synchronized void initialize(final JSONArray args) throws JSONException {
         _options = args.getJSONObject(0);
         this.evalJs("onRender", new JSONObject());
+        
     }
     private PluginResult checkout() {
-
+        this.evalJs("onClick", new JSONObject());
         try {
             String token = _options.getString("token");
             String amount = _options.getString("amount");

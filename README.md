@@ -82,6 +82,9 @@ PaypalBraintree.initialize(token, {
             // Cacelled user callback
           }
         },
+        onClick: () => {
+          // What you want me to do when user click the button
+        },
         onRender: () => {
           // What you want me to do when paypal is ready
         }

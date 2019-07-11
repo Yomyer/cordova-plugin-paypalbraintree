@@ -27,6 +27,7 @@ var PaypalBraintree = {
     error: null,
     authorize: null,
     render: null,
+    click: null,
     onAuthorize: function (response) {
         if(this.authorize){
             this.authorize(response);
@@ -45,6 +46,12 @@ var PaypalBraintree = {
         }
     },
 
+    onClick: function (response) {
+        if(this.click){
+            this.click(response);
+        }
+    },
+
     initialize: function (token, options, success, error) {
         if(options.onError){
             this.error = options.onError;
@@ -54,6 +61,9 @@ var PaypalBraintree = {
         }
         if(options.onRender){
             this.render = options.onRender;
+        }
+        if(options.onClick){
+            this.click = options.onClick;
         }
 
         options = {

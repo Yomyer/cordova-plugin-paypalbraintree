@@ -57,12 +57,16 @@ var PaypalBraintree = {
 
       },
 
-      onCancel: function (data, actions) {
+      onCancel: function () {
         window.PaypalBraintree.onAuthorize({ userCancelled: true });
         success({ userCancelled: true });
       },
 
-      onRender: function (data, actions) {
+      onClick: function(){
+        window.PaypalBraintree.onClick();
+      },
+
+      onRender: function () {
         if (options.customButton) {
           options.element.style.position = 'relative';
           setTimeout(_ => {

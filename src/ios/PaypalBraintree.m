@@ -57,7 +57,8 @@
 }
 
 - (void)checkout:(CDVInvokedUrlCommand*)command {
-    
+    [self evalJs:@"onClick" object:@{}];
+
     NSString* token = (NSString *)[self.options objectForKey:@"token"];
     NSString* amount = [(NSNumber *)(NSString *)[self.options objectForKey:@"amount"] stringValue];
     NSString* description = (NSString *)[self.options objectForKey:@"description"];
