@@ -60,7 +60,7 @@
     [self evalJs:@"onClick" object:@{}];
 
     NSString* token = (NSString *)[self.options objectForKey:@"token"];
-    NSString* amount = [(NSNumber *)(NSString *)[self.options objectForKey:@"amount"] stringValue];
+    NSString* amount = (NSString *)[self.options objectForKey:@"amount"];
     NSString* description = (NSString *)[self.options objectForKey:@"description"];
     NSString* currency = (NSString *)[self.options objectForKey:@"currency"];
     NSString* name = (NSString *)[self.options objectForKey:@"name"];
